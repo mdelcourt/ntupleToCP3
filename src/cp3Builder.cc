@@ -311,7 +311,7 @@ void cp3Builder::BuildllMetjj(){
 
   //Keep only candidate with highest pt
 
-  std::sort(HHllMetjj_.begin(), HHllMetjj_.end(), [&](HH::DileptonMetDijet& a, const HH::DileptonMetDijet& b){ return a.p4.Pt() > b.p4.Pt(); });
+  std::sort(HHllMetjj_.begin(), HHllMetjj_.end(), [&](HH::DileptonMetDijet& a, const HH::DileptonMetDijet& b){ return ((1000*a.btag_MM + a.p4.Pt()) > (1000*b.btag_MM + b.p4.Pt())); });
   if(HHllMetjj_.size() > 1 ) {
     HHllMetjj_.resize(1);
   }
