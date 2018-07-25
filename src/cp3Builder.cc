@@ -24,8 +24,8 @@ void cp3Builder::clean(){
 
 void cp3Builder::Build(){
   clean();
-  BuildJets();
   BuildLeptons();
+  BuildJets();
   BuildDiLeptons();
   BuildDiJets();
   BuildMet();
@@ -41,22 +41,8 @@ void cp3Builder::BuildLeptons(){
   for (int eleId = 0; eleId < ev->nte; eleId++){
     if (ev->te_pt[eleId] < 15){
       continue;
-    }
-    bool goodDrj = true;
-    for (auto j : HHJet_){
-      float dphi = j.p4.Phi() - ev->te_phi[eleId];
-      float deta = j.p4.Eta() - ev->te_eta[eleId];
-      goodDrj = ( dphi*dphi + deta*deta > 0.09);
-      if ( !goodDrj){
-        break;
-      }
-    }
-
-    if (!goodDrj){
-      continue;
-    }
     
-
+    }
     Lepton l;
     l.p4 = LorentzVector(ev->te_pt[eleId],ev->te_eta[eleId],ev->te_phi[eleId],ev->te_mass[eleId]);
     l.p4.SetE(sqrt(pow(l.p4.P(),2) + pow(ev->te_mass[eleId],2)));
@@ -68,24 +54,10 @@ void cp3Builder::BuildLeptons(){
 
 
   for (int muonId = 0; muonId < ev->ntm; muonId++){
-    if (ev->tm_pt[muonId] < 10 || ev->tm_relIso[muonId] < .25){ //Iso L/T : .25/.15
+    if (ev->tm_pt[muonId] < 10)
       continue;
-    }
-    bool goodDrj = true;
-    for (auto j : HHJet_){
-      float dphi = j.p4.Phi() - ev->tm_phi[muonId];
-      float deta = j.p4.Eta() - ev->tm_eta[muonId];
-      goodDrj = ( dphi*dphi + deta*deta > 0.09);
-      if ( !goodDrj){
-        break;
-      }
-    }
-
-    if (!goodDrj){
+    if(ev->tm_relIso[muonId] > .25) //Iso L/T : .25/.15
       continue;
-    }
-
-
     Lepton l;
     l.p4= LorentzVector(ev->tm_pt[muonId],ev->tm_eta[muonId],ev->tm_phi[muonId],ev->tm_mass[muonId]);
     l.p4.SetE(sqrt(pow(l.p4.P(),2) + pow(ev->tm_mass[muonId],2)));
@@ -99,15 +71,30 @@ void cp3Builder::BuildLeptons(){
 
 void cp3Builder::BuildJets(){
   for (int jetId = 0; jetId < ev->nj ; jetId++){
+//    cout<<ev->j_pt[jetId]<<"   ---   "<<ev->j_mvav2[jetId]<<endl;
     if (ev->j_pt[jetId] < 20)
       continue;
+
     Jet j;
     j.p4 = LorentzVector(ev->j_pt[jetId],ev->j_eta[jetId],ev->j_phi[jetId],ev->j_mass[jetId]);
     j.p4.SetE(sqrt(pow(j.p4.P(),2) + pow(ev->j_mass[jetId],2)));
+
+    int  leptCounter = 0;
+    bool goodDrj = true;
+
+    for (auto l : HHLept_){
+      goodDrj &= ROOT::Math::VectorUtil::DeltaR(j.p4,l.p4) > 0.3 ;
+      leptCounter ++;
+      if (leptCounter > 2)
+        break;
+    }
+    if (!goodDrj)
+      continue;
     j.btag_M = (bool) ev->j_mvav2[jetId];
     HHJet_.push_back(j);
   }
-
+//  cout<<"Building jets... ";
+//  cout<<HHJet_.size()<<"/"<<ev->nj<<"accepted"<<endl;
 }
 
 void cp3Builder::BuildDiLeptons(){
