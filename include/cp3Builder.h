@@ -5,6 +5,7 @@
 #include "include/cp3Types.h"
 #include "include/Tools.h"
 #include "include/lester_mt2_bisect.h"
+#include <string>
 
 #include <vector>
 class cp3Builder{
@@ -27,6 +28,7 @@ class cp3Builder{
     float  event_weight             ;
     float  sum_event_weight         ;
     float  event_pu_weight          ;
+    float  event_btag_weight        ;
     bool hh_mumu_category         ;
     bool hh_mumu_fire_trigger_cut ;
     bool hh_muel_category         ;
@@ -45,13 +47,13 @@ class cp3Builder{
     std::vector < HH::DileptonMetDijet> HHllMetjj_;
 
   public:
-    cp3Builder(MiniEvent_t * e_);
+    cp3Builder(MiniEvent_t * e_, std::string fName);
     void Build();
     void InitializeTree(TTree *t);
     void Write(TTree * t);
     void Print(); 
     void SaveMetadata();
-    
+    bool isDY_;  
 };
 
 

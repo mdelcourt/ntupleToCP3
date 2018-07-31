@@ -1,4 +1,5 @@
 #include "include/cp3Builder.h"
+#include "include/BtagWeight.h"
 #include "Math/GenVector/VectorUtil.h"
 #include "TFile.h"
 #include "TParameter.h"
@@ -7,12 +8,19 @@
 using namespace std;
 using namespace HH;
 
-cp3Builder::cp3Builder(MiniEvent_t * e_){
+vector <string> particles = {"0","d","u","s","c","b","t","b'","t'","9","10","e","ne","mu","nmu","tau","ntau","tau'","ntau'",
+  "19","20","g","gamma","Z","W","H","26","27","28","29"};
+cp3Builder::cp3Builder(MiniEvent_t * e_, string fName){
   ev=e_;
   sum_event_weight = 0;
+  isDY_ = (fName.find("DY") != std::string::npos );
+  cout<<"This sample is";
+  if (!isDY_) cout<<" not";
+  cout<<" DY."<<endl;
 }
 
 void cp3Builder::clean(){
+  event_btag_weight = 1;
   HHLept_.clear(); 
   HHJet_.clear(); 
   HHDiLept_.clear();
@@ -70,8 +78,18 @@ void cp3Builder::BuildLeptons(){
 }
 
 void cp3Builder::BuildJets(){
+//    cout<<endl<<endl<<"NEW EVENT"<<endl;
+  // pList is list of final state particles.
+  vector <int> pList;
+  for (int  ji = 0; ji < ev->ngl; ji++){
+    if (ev->gl_st[ji] == 23 || ev->gl_st[ji] == 1){
+       pList.push_back(ji);
+       //cout<<ev->gl_pid[ji]<< "("<<particles.at(abs(ev->gl_pid[ji]))<<") , (pt,eta,phi)  = (";
+       //cout<<ev->gl_pt[ji]<<","<<ev->gl_eta[ji]<<","<<ev->gl_phi[ji]<<"). Status = "<<ev->gl_st[ji]<<endl;
+    }
+  }
+  
   for (int jetId = 0; jetId < ev->nj ; jetId++){
-//    cout<<ev->j_pt[jetId]<<"   ---   "<<ev->j_mvav2[jetId]<<endl;
     if (ev->j_pt[jetId] < 20)
       continue;
 
@@ -90,11 +108,53 @@ void cp3Builder::BuildJets(){
     }
     if (!goodDrj)
       continue;
-    j.btag_M = (bool) ev->j_mvav2[jetId];
+
+/*    cout<<endl<<endl<<"Found jet :"<<j.p4.Pt()<<"  "<<j.p4.Eta()<<"  "<<j.p4.Phi()<<";";
+    cout<<"Btagged : "<<ev->j_mvav2[jetId]<<endl;*/
+    //SETTING ALL JETS TO BTAGGED AND SETTING WEIGHT IN "CSV" ATTRIBUTE
+//    j.btag_M = (bool) ev->j_mvav2[jetId];
+    j.btag_M = true;    
+    
+    //Since btag depends on flavour, let's find out...
+    //--> Loop on all gen particles within DR <= 0.3
+    
+    int flav = 3; // If eta <= 3, light jet (we don't care)
+    float pt(0),eta(0),phi(0);
+    for (auto ji:pList){
+        //Check if Dr < 0.3
+        if ((pow(ev->gl_eta[ji]-j.p4.Eta(),2) + pow(ev->gl_phi[ji]-j.p4.Phi(),2)) > 0.09)
+          continue;
+/*        cout<<"Found corresponding parton :"<<endl;
+        cout<<ev->gl_pid[ji]<< "("<<particles.at(abs(ev->gl_pid[ji]))<<") , (pt,eta,phi)  = (";
+        cout<<ev->gl_pt[ji]<<","<<ev->gl_eta[ji]<<","<<ev->gl_phi[ji]<<"). Status = "<<ev->gl_st[ji]<<endl;*/
+        if (abs(ev->gl_pid[ji]) == 4 || abs(ev->gl_pid[ji]) == 5){// Only select c and b jets
+          if (abs(ev->gl_pid[ji]) > flav || (abs(ev->gl_pid[ji]) == flav && fabs(ev->gl_pt[ji])>fabs(pt))){
+            flav = abs(ev->gl_pid[ji]);
+            pt   = ev->gl_pt[ji];
+            eta  = ev->gl_eta[ji];
+            phi  = ev->gl_phi[ji];
+          }
+        }
+
+    }
+//    cout<<"Selected for eff meas : "<<flav<<" "<<pt<<" "<<eta<<" " <<phi<<endl;
+
+    /*cout<<"-------------> SUMMARY :"<<endl;
+    for (int  ji = 0; ji < ev->ngl; ji++){
+      if (ev->gl_st[ji] == 23 || ev->gl_st[ji] == 1)
+        {
+          cout<<ev->gl_pid[ji]<< "("<<particles.at(abs(ev->gl_pid[ji]))<<") , (pt,eta,phi)  = (";
+          cout<<ev->gl_pt[ji]<<","<<ev->gl_eta[ji]<<","<<ev->gl_phi[ji]<<"). Status = "<<ev->gl_st[ji]<<endl;
+        }
+    }
+    */
+    if (flav == 3)
+      flav = 0; // Light jet should actually be 0 in Delphes.
+
+    j.CSV = getBtagEff(pt,eta,flav); 
+//    cout<<"BTAG weight : "<<j.CSV<<endl;
     HHJet_.push_back(j);
   }
-//  cout<<"Building jets... ";
-//  cout<<HHJet_.size()<<"/"<<ev->nj<<"accepted"<<endl;
 }
 
 void cp3Builder::BuildDiLeptons(){
@@ -218,6 +278,9 @@ void cp3Builder::BuildDiJets(){
 }
 
 void cp3Builder::BuildllMetjj(){
+/*  cout<<"building HHlljjmet"<<endl;
+  cout<<"N HHllMet_ = "<<HHllMet_.size()<<endl;
+  cout<<"N HHDiJet_ = "<<HHDiJet_.size()<<endl;*/
   LorentzVector null_p4(0., 0., 0., 0.);
   for (unsigned int illmet = 0; illmet < HHllMet_.size(); illmet++)
   {
@@ -336,7 +399,17 @@ void cp3Builder::BuildllMetjj(){
 
   //Keep only candidate with highest pt
 
-  std::sort(HHllMetjj_.begin(), HHllMetjj_.end(), [&](HH::DileptonMetDijet& a, const HH::DileptonMetDijet& b){ return ((1000*a.btag_MM + a.p4.Pt()) > (1000*b.btag_MM + b.p4.Pt())); });
+  std::sort(HHllMetjj_.begin(), HHllMetjj_.end(), [&](HH::DileptonMetDijet& a, const HH::DileptonMetDijet& b){ return ((1e6*a.sumCSV + a.p4.Pt()) > (1e6*b.sumCSV + b.p4.Pt())); });
+/*  if (HHllMetjj_.size() > 0){
+    cout<<"DEBUG DEBUG DEBUG"<<endl;
+    cout<<"Jets : "<<endl;
+    for (auto j : HHJet_)
+      cout<<j.CSV<<endl;
+    cout<<"-----"<<endl;
+    cout<<"Combination : "<<endl;
+    for (auto jj : HHllMetjj_)
+      cout<<jj.sumCSV<<"  "<<jj.p4.Pt()<<endl;
+  }*/
   if(HHllMetjj_.size() > 1 ) {
     HHllMetjj_.resize(1);
   }
@@ -373,10 +446,21 @@ void cp3Builder::GetEventVariables(){
     }
 
     // Others... TODO:
-    if (ev->g_nw > 0 && ev->maxweights > 0)
+/*    if (ev->g_nw > 0 && ev->maxweights > 0)
       event_weight           = ev->g_w[0];
     else
-      event_weight           = 1;
+      event_weight           = 1;*/
+
+    if (HHllMetjj_.size() > 0){
+      int ijet1 = HHllMetjj_[0].ijet1;
+      int ijet2 = HHllMetjj_[0].ijet2;
+      event_weight = HHJet_[ijet1].CSV * HHJet_[ijet2].CSV;
+//      cout<<"Weight = "<<event_weight <<endl;
+    }
+    else{
+      event_weight = 0;
+    }
+
     sum_event_weight += event_weight;
     event_pu_weight          = 1;
     hh_mumu_category         = 0;
