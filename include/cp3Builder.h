@@ -24,6 +24,8 @@ class cp3Builder{
 
     float HT_;
     int nBJets_, nMuons_, nElectrons_, nJets_;
+    
+    bool reweightBtag_;
 
     float  event_weight             ;
     float  sum_event_weight         ;
@@ -47,7 +49,7 @@ class cp3Builder{
     std::vector < HH::DileptonMetDijet> HHllMetjj_;
 
   public:
-    cp3Builder(MiniEvent_t * e_, std::string fName);
+    cp3Builder(MiniEvent_t * e_, std::string fName, bool reweightBtag);
     void Build();
     void InitializeTree(TTree *t);
     void Write(TTree * t);

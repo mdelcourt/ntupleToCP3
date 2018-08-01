@@ -2,8 +2,8 @@
 #include <iostream>
 
 
-Converter::Converter(std::string fileIn, std::string fileOut):
-  input_(fileIn),ev_(&input_.ev_),bd_(ev_,fileIn),fileOut_(fileOut){
+Converter::Converter(std::string fileIn, std::string fileOut, bool reweightBtag):
+  input_(fileIn),ev_(&input_.ev_), bd_(ev_,fileIn,reweightBtag),fileOut_(fileOut){
   std::cout<<"Constructor"<<std::endl;
 }
 

@@ -10,8 +10,11 @@ using namespace HH;
 
 vector <string> particles = {"0","d","u","s","c","b","t","b'","t'","9","10","e","ne","mu","nmu","tau","ntau","tau'","ntau'",
   "19","20","g","gamma","Z","W","H","26","27","28","29"};
-cp3Builder::cp3Builder(MiniEvent_t * e_, string fName){
+
+
+cp3Builder::cp3Builder(MiniEvent_t * e_, string fName, bool reweightBtag){
   ev=e_;
+  reweightBtag_ = reweightBtag;
   sum_event_weight = 0;
   isDY_ = (fName.find("DY") != std::string::npos );
   cout<<"This sample is";
@@ -81,11 +84,13 @@ void cp3Builder::BuildJets(){
 //    cout<<endl<<endl<<"NEW EVENT"<<endl;
   // pList is list of final state particles.
   vector <int> pList;
-  for (int  ji = 0; ji < ev->ngl; ji++){
-    if (ev->gl_st[ji] == 23 || ev->gl_st[ji] == 1){
-       pList.push_back(ji);
-       //cout<<ev->gl_pid[ji]<< "("<<particles.at(abs(ev->gl_pid[ji]))<<") , (pt,eta,phi)  = (";
-       //cout<<ev->gl_pt[ji]<<","<<ev->gl_eta[ji]<<","<<ev->gl_phi[ji]<<"). Status = "<<ev->gl_st[ji]<<endl;
+  if (reweightBtag_){
+    for (int  ji = 0; ji < ev->ngl; ji++){
+      if (ev->gl_st[ji] == 23 || ev->gl_st[ji] == 1){
+         pList.push_back(ji);
+         //cout<<ev->gl_pid[ji]<< "("<<particles.at(abs(ev->gl_pid[ji]))<<") , (pt,eta,phi)  = (";
+         //cout<<ev->gl_pt[ji]<<","<<ev->gl_eta[ji]<<","<<ev->gl_phi[ji]<<"). Status = "<<ev->gl_st[ji]<<endl;
+      }
     }
   }
   
@@ -109,50 +114,39 @@ void cp3Builder::BuildJets(){
     if (!goodDrj)
       continue;
 
-/*    cout<<endl<<endl<<"Found jet :"<<j.p4.Pt()<<"  "<<j.p4.Eta()<<"  "<<j.p4.Phi()<<";";
-    cout<<"Btagged : "<<ev->j_mvav2[jetId]<<endl;*/
-    //SETTING ALL JETS TO BTAGGED AND SETTING WEIGHT IN "CSV" ATTRIBUTE
-//    j.btag_M = (bool) ev->j_mvav2[jetId];
-    j.btag_M = true;    
-    
-    //Since btag depends on flavour, let's find out...
-    //--> Loop on all gen particles within DR <= 0.3
-    
-    int flav = 3; // If eta <= 3, light jet (we don't care)
-    float pt(0),eta(0),phi(0);
-    for (auto ji:pList){
-        //Check if Dr < 0.3
-        if ((pow(ev->gl_eta[ji]-j.p4.Eta(),2) + pow(ev->gl_phi[ji]-j.p4.Phi(),2)) > 0.09)
-          continue;
-/*        cout<<"Found corresponding parton :"<<endl;
-        cout<<ev->gl_pid[ji]<< "("<<particles.at(abs(ev->gl_pid[ji]))<<") , (pt,eta,phi)  = (";
-        cout<<ev->gl_pt[ji]<<","<<ev->gl_eta[ji]<<","<<ev->gl_phi[ji]<<"). Status = "<<ev->gl_st[ji]<<endl;*/
-        if (abs(ev->gl_pid[ji]) == 4 || abs(ev->gl_pid[ji]) == 5){// Only select c and b jets
-          if (abs(ev->gl_pid[ji]) > flav || (abs(ev->gl_pid[ji]) == flav && fabs(ev->gl_pt[ji])>fabs(pt))){
-            flav = abs(ev->gl_pid[ji]);
-            pt   = ev->gl_pt[ji];
-            eta  = ev->gl_eta[ji];
-            phi  = ev->gl_phi[ji];
-          }
-        }
-
-    }
-//    cout<<"Selected for eff meas : "<<flav<<" "<<pt<<" "<<eta<<" " <<phi<<endl;
-
-    /*cout<<"-------------> SUMMARY :"<<endl;
-    for (int  ji = 0; ji < ev->ngl; ji++){
-      if (ev->gl_st[ji] == 23 || ev->gl_st[ji] == 1)
-        {
+    if(reweightBtag_){
+      // We force all jets to be btagged, and reweight the event accordingly.
+      j.btag_M = true;      
+      //Since btag depends on flavour, let's find out...
+      //--> Loop on all gen particles within DR <= 0.3
+      
+      int flav = 3; // If eta <= 3, light jet (we don't care)
+      float pt(0),eta(0);
+      for (auto ji:pList){
+          //Check if Dr < 0.3
+          if ((pow(ev->gl_eta[ji]-j.p4.Eta(),2) + pow(ev->gl_phi[ji]-j.p4.Phi(),2)) > 0.09)
+            continue;
+  /*      cout<<"Found corresponding parton :"<<endl;
           cout<<ev->gl_pid[ji]<< "("<<particles.at(abs(ev->gl_pid[ji]))<<") , (pt,eta,phi)  = (";
-          cout<<ev->gl_pt[ji]<<","<<ev->gl_eta[ji]<<","<<ev->gl_phi[ji]<<"). Status = "<<ev->gl_st[ji]<<endl;
-        }
+          cout<<ev->gl_pt[ji]<<","<<ev->gl_eta[ji]<<","<<ev->gl_phi[ji]<<"). Status = "<<ev->gl_st[ji]<<endl;*/
+          if (abs(ev->gl_pid[ji]) == 4 || abs(ev->gl_pid[ji]) == 5){// Only select c and b jets
+            if (abs(ev->gl_pid[ji]) > flav || (abs(ev->gl_pid[ji]) == flav && fabs(ev->gl_pt[ji])>fabs(pt))){
+              flav = abs(ev->gl_pid[ji]);
+              pt   = ev->gl_pt[ji];
+              eta  = ev->gl_eta[ji];
+            }
+          }
+  
+      }
+      if (flav == 3)
+        flav = 0; // Light jet should actually be 0 in Delphes.
+  
+      j.CSV = getBtagEff(pt,eta,flav);
     }
-    */
-    if (flav == 3)
-      flav = 0; // Light jet should actually be 0 in Delphes.
-
-    j.CSV = getBtagEff(pt,eta,flav); 
-//    cout<<"BTAG weight : "<<j.CSV<<endl;
+    else{
+      j.btag_M = (bool) ev->j_mvav2[jetId];
+      j.CSV    = (int)  j.btag_M;
+    }
     HHJet_.push_back(j);
   }
 }
@@ -445,20 +439,23 @@ void cp3Builder::GetEventVariables(){
       }
     }
 
-    // Others... TODO:
-/*    if (ev->g_nw > 0 && ev->maxweights > 0)
-      event_weight           = ev->g_w[0];
-    else
-      event_weight           = 1;*/
-
-    if (HHllMetjj_.size() > 0){
-      int ijet1 = HHllMetjj_[0].ijet1;
-      int ijet2 = HHllMetjj_[0].ijet2;
-      event_weight = HHJet_[ijet1].CSV * HHJet_[ijet2].CSV;
-//      cout<<"Weight = "<<event_weight <<endl;
+    // Others...
+    
+    if (reweightBtag_){
+      if (HHllMetjj_.size() > 0){
+        int ijet1 = HHllMetjj_[0].ijet1;
+        int ijet2 = HHllMetjj_[0].ijet2;
+        event_weight = HHJet_[ijet1].CSV * HHJet_[ijet2].CSV;
+      }
+      else{
+        event_weight = 0;
+      }
     }
     else{
-      event_weight = 0;
+      if (ev->g_nw > 0 && ev->maxweights > 0)
+        event_weight           = ev->g_w[0];
+     else
+       event_weight           = 1;
     }
 
     sum_event_weight += event_weight;

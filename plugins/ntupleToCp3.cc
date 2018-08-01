@@ -11,7 +11,8 @@ int main(int argc, char ** argv){
   
   std::string inputFile(argv[1]);
   std::string outputFile(argv[2]);
-//  std::cout<<
-  Converter c(inputFile,outputFile);
+
+  bool reweightDY = true;
+  Converter c(inputFile,outputFile,reweightDY);
   c.testProducer();
 }
