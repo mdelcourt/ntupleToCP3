@@ -16,6 +16,10 @@ cp3Builder::cp3Builder(MiniEvent_t * e_, string fName, bool reweightBtag){
   ev=e_;
   reweightBtag_ = reweightBtag;
   sum_event_weight = 0;
+  event_is_data = false;
+  cout<<"here?"<<endl;
+  event_scale_weights.resize(6,1);
+  cout<<"survived :-)"<<endl;
   isDY_ = (fName.find("DY") != std::string::npos );
   cout<<"This sample is";
   if (!isDY_) cout<<" not";
@@ -24,8 +28,13 @@ cp3Builder::cp3Builder(MiniEvent_t * e_, string fName, bool reweightBtag){
 
 void cp3Builder::clean(){
   event_btag_weight = 1;
-  HHLept_.clear(); 
+  HHLept_.clear();
+  electron_sf.clear();
+  muon_sf.clear();
+  leptonOnes.clear();
   HHJet_.clear(); 
+  jet_sf_cmvav2_heavyjet_medium.clear();
+  jet_sf_cmvav2_lightjet_medium.clear();
   HHDiLept_.clear();
   HHDiJet_.clear();
   HHMet_.clear();
@@ -36,6 +45,7 @@ void cp3Builder::clean(){
 void cp3Builder::Build(){
   clean();
   BuildLeptons();
+  BuildLeptonSystematics();
   BuildJets();
   BuildDiLeptons();
   BuildDiJets();
@@ -78,13 +88,48 @@ void cp3Builder::BuildLeptons(){
     HHLept_.push_back(l);
   }
    std::sort(HHLept_.begin(), HHLept_.end(), [](const HH::Lepton& lep1, const HH::Lepton& lep2) { return lep1.p4.Pt() > lep2.p4.Pt(); });
+
 }
 
+void cp3Builder::BuildLeptonSystematics(){
+
+  vector <float> sf;
+  vector <float> one(3,1.);
+  float w = 0;
+  for (auto l : HHLept_){
+    if (l.isEl){
+      if (l.p4.Pt() < 20)
+        w = 0.025;
+      else
+        w = 0.01;
+    }
+    else{
+      w = 0.005;
+    }
+    sf.push_back(1.);
+    sf.push_back(1.+w);
+    sf.push_back(1.-w);
+    if (l.isEl){
+      electron_sf.push_back(sf);
+      muon_sf.push_back(one);
+    }
+    else{
+      electron_sf.push_back(one);
+      muon_sf.push_back(sf);
+    }
+    leptonOnes.push_back(one);
+    sf.clear();
+  }
+
+}
+
+
+
 void cp3Builder::BuildJets(){
-//    cout<<endl<<endl<<"NEW EVENT"<<endl;
+  
   // pList is list of final state particles.
   vector <int> pList;
-  if (reweightBtag_){
+  if (true || reweightBtag_){ // We have to fill particle content for btag systematics
     for (int  ji = 0; ji < ev->ngl; ji++){
       if (ev->gl_st[ji] == 23 || ev->gl_st[ji] == 1){
          pList.push_back(ji);
@@ -113,14 +158,15 @@ void cp3Builder::BuildJets(){
     }
     if (!goodDrj)
       continue;
-
-    if(reweightBtag_){
+    int flav = 3; // if flav <=3, light jet ---> We don't care.
+    if(true || reweightBtag_){ // We have to get the flavour for btag efficiency.
       // We force all jets to be btagged, and reweight the event accordingly.
-      j.btag_M = true;      
+      if (reweightBtag_)
+        j.btag_M = true;     
+
       //Since btag depends on flavour, let's find out...
       //--> Loop on all gen particles within DR <= 0.3
       
-      int flav = 3; // If eta <= 3, light jet (we don't care)
       float pt(0),eta(0);
       for (auto ji:pList){
           //Check if Dr < 0.3
@@ -140,13 +186,31 @@ void cp3Builder::BuildJets(){
       }
       if (flav == 3)
         flav = 0; // Light jet should actually be 0 in Delphes.
-  
-      j.CSV = getBtagEff(pt,eta,flav);
+      if (reweightBtag_)  
+        j.CSV = getBtagEff(pt,eta,flav);
     }
-    else{
-      j.btag_M = (bool) ev->j_mvav2[jetId];
+    if (!reweightBtag_)
+    {
+      j.btag_M = (bool) (ev->j_mvav2[jetId]>>5)%2; //Choosing WP tight... FIXME
       j.CSV    = (int)  j.btag_M;
     }
+
+
+    // Btag weights !!!!
+    // Since we forced the btagging loop, the flavour should be correct here...
+    vector <float> w_h;
+    vector <float> w_l;
+    getBtagSyst(flav,j.p4.Pt(),w_l,w_h);
+    jet_sf_cmvav2_heavyjet_medium.push_back(w_h); 
+    jet_sf_cmvav2_lightjet_medium.push_back(w_l);
+    // A little debug : 
+    /*cout<<"Jet "<<jetId<<" (flav = "<<flav<<" ) : "<<endl;
+    for (auto x :w_l)
+      cout<<x<<" ";
+    cout<<endl;
+    for (auto x :w_h)
+      cout<<x<<" ";
+    cout<<endl;*/
     HHJet_.push_back(j);
   }
 }
@@ -548,6 +612,8 @@ void cp3Builder::InitializeTree(TTree * t){
   t->Branch("met_p4"         ,&met_p4     );
   t->Branch("event_weight"               ,&event_weight              );     
   t->Branch("event_pu_weight"            ,&event_pu_weight           );     
+  t->Branch("event_is_data"              ,&event_is_data             );     
+  t->Branch("event_scale_weights"        ,&event_scale_weights       );     
   t->Branch("hh_mumu_category"           ,&hh_mumu_category          );     
   t->Branch("hh_mumu_fire_trigger_cut"   ,&hh_mumu_fire_trigger_cut  );     
   t->Branch("hh_muel_category"           ,&hh_muel_category          );     
@@ -556,7 +622,13 @@ void cp3Builder::InitializeTree(TTree * t){
   t->Branch("hh_elmu_fire_trigger_cut"   ,&hh_elmu_fire_trigger_cut  );     
   t->Branch("hh_elel_category"           ,&hh_elel_category          );     
   t->Branch("hh_elel_fire_trigger_cut"   ,&hh_elel_fire_trigger_cut  );     
-
+  t->Branch("jet_sf_cmvav2_heavyjet_medium",&jet_sf_cmvav2_heavyjet_medium);
+  t->Branch("jet_sf_cmvav2_lightjet_medium",&jet_sf_cmvav2_lightjet_medium);
+  t->Branch("electron_sf_id"             ,&electron_sf);
+  t->Branch("electron_sf_reco"           ,&leptonOnes);
+  t->Branch("muon_sf_tracking"           ,&leptonOnes);
+  t->Branch("muon_sf_id"                 ,&muon_sf);
+  t->Branch("muon_sf_iso"                ,&leptonOnes);
   
   /* Missing values :
  * all gen info
@@ -584,5 +656,6 @@ void cp3Builder::Write(TTree * t){
 
 void cp3Builder::SaveMetadata(){
     TParameter <float> myParam("event_weight_sum",sum_event_weight);
-    myParam.Write("event_weight_sum");    
+    myParam.Write("event_weight_sum");   
+
 }

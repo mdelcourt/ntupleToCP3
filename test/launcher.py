@@ -4,7 +4,13 @@ baseDirIn = "/home/ucl/cp3/delcourt/storage/HH_HLLHC/DELPHES_YR/"
 baseDirOut = "/home/ucl/cp3/delcourt/storage/HH_HLLHC/CP3_NTUPLES_YR/"
 dumpDir    = baseDirOut+"dump/"
 
-dirList = os.listdir(baseDirIn)
+dirList = []
+for f in os.listdir(baseDirIn):
+  if "GluGlu" in f:
+    continue
+  else:
+    dirList.append(f)
+#dirList = ["GluGluToHHTo2B2VTo2L2Nu_node_SM_14TeV-madgraph_200PU"]
 
 pList = []
 print dirList
@@ -18,7 +24,7 @@ for d in dirList:
 
 
 
-filesPerJob = 100
+filesPerJob = 200
 jobList = []
 job = []
 for p in pList:

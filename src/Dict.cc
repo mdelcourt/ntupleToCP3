@@ -6,6 +6,7 @@
 #include <stddef.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <math.h>
 #include <string.h>
 #include <assert.h>
 #define G__DICTIONARY
@@ -39,50 +40,8 @@ namespace std {} using namespace std;
 // Header files passed as explicit arguments
 #include "include/MiniEvent.h"
 #include "include/cp3Types.h"
-#include "include/cp3Types.h"
 
 // Header files passed via #pragma extra_include
-
-namespace ROOT {
-   static TClass *pairlEsignedsPcharcOsignedsPchargR_Dictionary();
-   static void pairlEsignedsPcharcOsignedsPchargR_TClassManip(TClass*);
-   static void *new_pairlEsignedsPcharcOsignedsPchargR(void *p = 0);
-   static void *newArray_pairlEsignedsPcharcOsignedsPchargR(Long_t size, void *p);
-   static void delete_pairlEsignedsPcharcOsignedsPchargR(void *p);
-   static void deleteArray_pairlEsignedsPcharcOsignedsPchargR(void *p);
-   static void destruct_pairlEsignedsPcharcOsignedsPchargR(void *p);
-
-   // Function generating the singleton type initializer
-   static TGenericClassInfo *GenerateInitInstanceLocal(const pair<signed char,signed char>*)
-   {
-      pair<signed char,signed char> *ptr = 0;
-      static ::TVirtualIsAProxy* isa_proxy = new ::TIsAProxy(typeid(pair<signed char,signed char>));
-      static ::ROOT::TGenericClassInfo 
-         instance("pair<signed char,signed char>", "string", 198,
-                  typeid(pair<signed char,signed char>), ::ROOT::Internal::DefineBehavior(ptr, ptr),
-                  &pairlEsignedsPcharcOsignedsPchargR_Dictionary, isa_proxy, 4,
-                  sizeof(pair<signed char,signed char>) );
-      instance.SetNew(&new_pairlEsignedsPcharcOsignedsPchargR);
-      instance.SetNewArray(&newArray_pairlEsignedsPcharcOsignedsPchargR);
-      instance.SetDelete(&delete_pairlEsignedsPcharcOsignedsPchargR);
-      instance.SetDeleteArray(&deleteArray_pairlEsignedsPcharcOsignedsPchargR);
-      instance.SetDestructor(&destruct_pairlEsignedsPcharcOsignedsPchargR);
-      return &instance;
-   }
-   // Static variable to force the class initialization
-   static ::ROOT::TGenericClassInfo *_R__UNIQUE_DICT_(Init) = GenerateInitInstanceLocal((const pair<signed char,signed char>*)0x0); R__UseDummy(_R__UNIQUE_DICT_(Init));
-
-   // Dictionary for non-ClassDef classes
-   static TClass *pairlEsignedsPcharcOsignedsPchargR_Dictionary() {
-      TClass* theClass =::ROOT::GenerateInitInstanceLocal((const pair<signed char,signed char>*)0x0)->GetClass();
-      pairlEsignedsPcharcOsignedsPchargR_TClassManip(theClass);
-   return theClass;
-   }
-
-   static void pairlEsignedsPcharcOsignedsPchargR_TClassManip(TClass* ){
-   }
-
-} // end of namespace ROOT
 
 namespace ROOT {
    static TClass *HHcLcLLepton_Dictionary();
@@ -115,7 +74,7 @@ namespace ROOT {
       return GenerateInitInstanceLocal((::HH::Lepton*)0);
    }
    // Static variable to force the class initialization
-   static ::ROOT::TGenericClassInfo *_R__UNIQUE_DICT_(Init) = GenerateInitInstanceLocal((const ::HH::Lepton*)0x0); R__UseDummy(_R__UNIQUE_DICT_(Init));
+   static ::ROOT::TGenericClassInfo *_R__UNIQUE_(Init) = GenerateInitInstanceLocal((const ::HH::Lepton*)0x0); R__UseDummy(_R__UNIQUE_(Init));
 
    // Dictionary for non-ClassDef classes
    static TClass *HHcLcLLepton_Dictionary() {
@@ -125,141 +84,6 @@ namespace ROOT {
    }
 
    static void HHcLcLLepton_TClassManip(TClass* ){
-   }
-
-} // end of namespace ROOT
-
-namespace ROOT {
-   static TClass *HHcLcLDilepton_Dictionary();
-   static void HHcLcLDilepton_TClassManip(TClass*);
-   static void *new_HHcLcLDilepton(void *p = 0);
-   static void *newArray_HHcLcLDilepton(Long_t size, void *p);
-   static void delete_HHcLcLDilepton(void *p);
-   static void deleteArray_HHcLcLDilepton(void *p);
-   static void destruct_HHcLcLDilepton(void *p);
-
-   // Function generating the singleton type initializer
-   static TGenericClassInfo *GenerateInitInstanceLocal(const ::HH::Dilepton*)
-   {
-      ::HH::Dilepton *ptr = 0;
-      static ::TVirtualIsAProxy* isa_proxy = new ::TIsAProxy(typeid(::HH::Dilepton));
-      static ::ROOT::TGenericClassInfo 
-         instance("HH::Dilepton", "include/cp3Types.h", 38,
-                  typeid(::HH::Dilepton), ::ROOT::Internal::DefineBehavior(ptr, ptr),
-                  &HHcLcLDilepton_Dictionary, isa_proxy, 4,
-                  sizeof(::HH::Dilepton) );
-      instance.SetNew(&new_HHcLcLDilepton);
-      instance.SetNewArray(&newArray_HHcLcLDilepton);
-      instance.SetDelete(&delete_HHcLcLDilepton);
-      instance.SetDeleteArray(&deleteArray_HHcLcLDilepton);
-      instance.SetDestructor(&destruct_HHcLcLDilepton);
-      return &instance;
-   }
-   TGenericClassInfo *GenerateInitInstance(const ::HH::Dilepton*)
-   {
-      return GenerateInitInstanceLocal((::HH::Dilepton*)0);
-   }
-   // Static variable to force the class initialization
-   static ::ROOT::TGenericClassInfo *_R__UNIQUE_DICT_(Init) = GenerateInitInstanceLocal((const ::HH::Dilepton*)0x0); R__UseDummy(_R__UNIQUE_DICT_(Init));
-
-   // Dictionary for non-ClassDef classes
-   static TClass *HHcLcLDilepton_Dictionary() {
-      TClass* theClass =::ROOT::GenerateInitInstanceLocal((const ::HH::Dilepton*)0x0)->GetClass();
-      HHcLcLDilepton_TClassManip(theClass);
-   return theClass;
-   }
-
-   static void HHcLcLDilepton_TClassManip(TClass* ){
-   }
-
-} // end of namespace ROOT
-
-namespace ROOT {
-   static TClass *HHcLcLMet_Dictionary();
-   static void HHcLcLMet_TClassManip(TClass*);
-   static void *new_HHcLcLMet(void *p = 0);
-   static void *newArray_HHcLcLMet(Long_t size, void *p);
-   static void delete_HHcLcLMet(void *p);
-   static void deleteArray_HHcLcLMet(void *p);
-   static void destruct_HHcLcLMet(void *p);
-
-   // Function generating the singleton type initializer
-   static TGenericClassInfo *GenerateInitInstanceLocal(const ::HH::Met*)
-   {
-      ::HH::Met *ptr = 0;
-      static ::TVirtualIsAProxy* isa_proxy = new ::TIsAProxy(typeid(::HH::Met));
-      static ::ROOT::TGenericClassInfo 
-         instance("HH::Met", "include/cp3Types.h", 88,
-                  typeid(::HH::Met), ::ROOT::Internal::DefineBehavior(ptr, ptr),
-                  &HHcLcLMet_Dictionary, isa_proxy, 4,
-                  sizeof(::HH::Met) );
-      instance.SetNew(&new_HHcLcLMet);
-      instance.SetNewArray(&newArray_HHcLcLMet);
-      instance.SetDelete(&delete_HHcLcLMet);
-      instance.SetDeleteArray(&deleteArray_HHcLcLMet);
-      instance.SetDestructor(&destruct_HHcLcLMet);
-      return &instance;
-   }
-   TGenericClassInfo *GenerateInitInstance(const ::HH::Met*)
-   {
-      return GenerateInitInstanceLocal((::HH::Met*)0);
-   }
-   // Static variable to force the class initialization
-   static ::ROOT::TGenericClassInfo *_R__UNIQUE_DICT_(Init) = GenerateInitInstanceLocal((const ::HH::Met*)0x0); R__UseDummy(_R__UNIQUE_DICT_(Init));
-
-   // Dictionary for non-ClassDef classes
-   static TClass *HHcLcLMet_Dictionary() {
-      TClass* theClass =::ROOT::GenerateInitInstanceLocal((const ::HH::Met*)0x0)->GetClass();
-      HHcLcLMet_TClassManip(theClass);
-   return theClass;
-   }
-
-   static void HHcLcLMet_TClassManip(TClass* ){
-   }
-
-} // end of namespace ROOT
-
-namespace ROOT {
-   static TClass *HHcLcLDileptonMet_Dictionary();
-   static void HHcLcLDileptonMet_TClassManip(TClass*);
-   static void *new_HHcLcLDileptonMet(void *p = 0);
-   static void *newArray_HHcLcLDileptonMet(Long_t size, void *p);
-   static void delete_HHcLcLDileptonMet(void *p);
-   static void deleteArray_HHcLcLDileptonMet(void *p);
-   static void destruct_HHcLcLDileptonMet(void *p);
-
-   // Function generating the singleton type initializer
-   static TGenericClassInfo *GenerateInitInstanceLocal(const ::HH::DileptonMet*)
-   {
-      ::HH::DileptonMet *ptr = 0;
-      static ::TVirtualIsAProxy* isa_proxy = new ::TIsAProxy(typeid(::HH::DileptonMet));
-      static ::ROOT::TGenericClassInfo 
-         instance("HH::DileptonMet", "include/cp3Types.h", 97,
-                  typeid(::HH::DileptonMet), ::ROOT::Internal::DefineBehavior(ptr, ptr),
-                  &HHcLcLDileptonMet_Dictionary, isa_proxy, 4,
-                  sizeof(::HH::DileptonMet) );
-      instance.SetNew(&new_HHcLcLDileptonMet);
-      instance.SetNewArray(&newArray_HHcLcLDileptonMet);
-      instance.SetDelete(&delete_HHcLcLDileptonMet);
-      instance.SetDeleteArray(&deleteArray_HHcLcLDileptonMet);
-      instance.SetDestructor(&destruct_HHcLcLDileptonMet);
-      return &instance;
-   }
-   TGenericClassInfo *GenerateInitInstance(const ::HH::DileptonMet*)
-   {
-      return GenerateInitInstanceLocal((::HH::DileptonMet*)0);
-   }
-   // Static variable to force the class initialization
-   static ::ROOT::TGenericClassInfo *_R__UNIQUE_DICT_(Init) = GenerateInitInstanceLocal((const ::HH::DileptonMet*)0x0); R__UseDummy(_R__UNIQUE_DICT_(Init));
-
-   // Dictionary for non-ClassDef classes
-   static TClass *HHcLcLDileptonMet_Dictionary() {
-      TClass* theClass =::ROOT::GenerateInitInstanceLocal((const ::HH::DileptonMet*)0x0)->GetClass();
-      HHcLcLDileptonMet_TClassManip(theClass);
-   return theClass;
-   }
-
-   static void HHcLcLDileptonMet_TClassManip(TClass* ){
    }
 
 } // end of namespace ROOT
@@ -295,7 +119,7 @@ namespace ROOT {
       return GenerateInitInstanceLocal((::HH::Jet*)0);
    }
    // Static variable to force the class initialization
-   static ::ROOT::TGenericClassInfo *_R__UNIQUE_DICT_(Init) = GenerateInitInstanceLocal((const ::HH::Jet*)0x0); R__UseDummy(_R__UNIQUE_DICT_(Init));
+   static ::ROOT::TGenericClassInfo *_R__UNIQUE_(Init) = GenerateInitInstanceLocal((const ::HH::Jet*)0x0); R__UseDummy(_R__UNIQUE_(Init));
 
    // Dictionary for non-ClassDef classes
    static TClass *HHcLcLJet_Dictionary() {
@@ -305,6 +129,141 @@ namespace ROOT {
    }
 
    static void HHcLcLJet_TClassManip(TClass* ){
+   }
+
+} // end of namespace ROOT
+
+namespace ROOT {
+   static TClass *HHcLcLMet_Dictionary();
+   static void HHcLcLMet_TClassManip(TClass*);
+   static void *new_HHcLcLMet(void *p = 0);
+   static void *newArray_HHcLcLMet(Long_t size, void *p);
+   static void delete_HHcLcLMet(void *p);
+   static void deleteArray_HHcLcLMet(void *p);
+   static void destruct_HHcLcLMet(void *p);
+
+   // Function generating the singleton type initializer
+   static TGenericClassInfo *GenerateInitInstanceLocal(const ::HH::Met*)
+   {
+      ::HH::Met *ptr = 0;
+      static ::TVirtualIsAProxy* isa_proxy = new ::TIsAProxy(typeid(::HH::Met));
+      static ::ROOT::TGenericClassInfo 
+         instance("HH::Met", "include/cp3Types.h", 88,
+                  typeid(::HH::Met), ::ROOT::Internal::DefineBehavior(ptr, ptr),
+                  &HHcLcLMet_Dictionary, isa_proxy, 4,
+                  sizeof(::HH::Met) );
+      instance.SetNew(&new_HHcLcLMet);
+      instance.SetNewArray(&newArray_HHcLcLMet);
+      instance.SetDelete(&delete_HHcLcLMet);
+      instance.SetDeleteArray(&deleteArray_HHcLcLMet);
+      instance.SetDestructor(&destruct_HHcLcLMet);
+      return &instance;
+   }
+   TGenericClassInfo *GenerateInitInstance(const ::HH::Met*)
+   {
+      return GenerateInitInstanceLocal((::HH::Met*)0);
+   }
+   // Static variable to force the class initialization
+   static ::ROOT::TGenericClassInfo *_R__UNIQUE_(Init) = GenerateInitInstanceLocal((const ::HH::Met*)0x0); R__UseDummy(_R__UNIQUE_(Init));
+
+   // Dictionary for non-ClassDef classes
+   static TClass *HHcLcLMet_Dictionary() {
+      TClass* theClass =::ROOT::GenerateInitInstanceLocal((const ::HH::Met*)0x0)->GetClass();
+      HHcLcLMet_TClassManip(theClass);
+   return theClass;
+   }
+
+   static void HHcLcLMet_TClassManip(TClass* ){
+   }
+
+} // end of namespace ROOT
+
+namespace ROOT {
+   static TClass *HHcLcLDileptonMetDijet_Dictionary();
+   static void HHcLcLDileptonMetDijet_TClassManip(TClass*);
+   static void *new_HHcLcLDileptonMetDijet(void *p = 0);
+   static void *newArray_HHcLcLDileptonMetDijet(Long_t size, void *p);
+   static void delete_HHcLcLDileptonMetDijet(void *p);
+   static void deleteArray_HHcLcLDileptonMetDijet(void *p);
+   static void destruct_HHcLcLDileptonMetDijet(void *p);
+
+   // Function generating the singleton type initializer
+   static TGenericClassInfo *GenerateInitInstanceLocal(const ::HH::DileptonMetDijet*)
+   {
+      ::HH::DileptonMetDijet *ptr = 0;
+      static ::TVirtualIsAProxy* isa_proxy = new ::TIsAProxy(typeid(::HH::DileptonMetDijet));
+      static ::ROOT::TGenericClassInfo 
+         instance("HH::DileptonMetDijet", "include/cp3Types.h", 179,
+                  typeid(::HH::DileptonMetDijet), ::ROOT::Internal::DefineBehavior(ptr, ptr),
+                  &HHcLcLDileptonMetDijet_Dictionary, isa_proxy, 4,
+                  sizeof(::HH::DileptonMetDijet) );
+      instance.SetNew(&new_HHcLcLDileptonMetDijet);
+      instance.SetNewArray(&newArray_HHcLcLDileptonMetDijet);
+      instance.SetDelete(&delete_HHcLcLDileptonMetDijet);
+      instance.SetDeleteArray(&deleteArray_HHcLcLDileptonMetDijet);
+      instance.SetDestructor(&destruct_HHcLcLDileptonMetDijet);
+      return &instance;
+   }
+   TGenericClassInfo *GenerateInitInstance(const ::HH::DileptonMetDijet*)
+   {
+      return GenerateInitInstanceLocal((::HH::DileptonMetDijet*)0);
+   }
+   // Static variable to force the class initialization
+   static ::ROOT::TGenericClassInfo *_R__UNIQUE_(Init) = GenerateInitInstanceLocal((const ::HH::DileptonMetDijet*)0x0); R__UseDummy(_R__UNIQUE_(Init));
+
+   // Dictionary for non-ClassDef classes
+   static TClass *HHcLcLDileptonMetDijet_Dictionary() {
+      TClass* theClass =::ROOT::GenerateInitInstanceLocal((const ::HH::DileptonMetDijet*)0x0)->GetClass();
+      HHcLcLDileptonMetDijet_TClassManip(theClass);
+   return theClass;
+   }
+
+   static void HHcLcLDileptonMetDijet_TClassManip(TClass* ){
+   }
+
+} // end of namespace ROOT
+
+namespace ROOT {
+   static TClass *HHcLcLDileptonMet_Dictionary();
+   static void HHcLcLDileptonMet_TClassManip(TClass*);
+   static void *new_HHcLcLDileptonMet(void *p = 0);
+   static void *newArray_HHcLcLDileptonMet(Long_t size, void *p);
+   static void delete_HHcLcLDileptonMet(void *p);
+   static void deleteArray_HHcLcLDileptonMet(void *p);
+   static void destruct_HHcLcLDileptonMet(void *p);
+
+   // Function generating the singleton type initializer
+   static TGenericClassInfo *GenerateInitInstanceLocal(const ::HH::DileptonMet*)
+   {
+      ::HH::DileptonMet *ptr = 0;
+      static ::TVirtualIsAProxy* isa_proxy = new ::TIsAProxy(typeid(::HH::DileptonMet));
+      static ::ROOT::TGenericClassInfo 
+         instance("HH::DileptonMet", "include/cp3Types.h", 97,
+                  typeid(::HH::DileptonMet), ::ROOT::Internal::DefineBehavior(ptr, ptr),
+                  &HHcLcLDileptonMet_Dictionary, isa_proxy, 4,
+                  sizeof(::HH::DileptonMet) );
+      instance.SetNew(&new_HHcLcLDileptonMet);
+      instance.SetNewArray(&newArray_HHcLcLDileptonMet);
+      instance.SetDelete(&delete_HHcLcLDileptonMet);
+      instance.SetDeleteArray(&deleteArray_HHcLcLDileptonMet);
+      instance.SetDestructor(&destruct_HHcLcLDileptonMet);
+      return &instance;
+   }
+   TGenericClassInfo *GenerateInitInstance(const ::HH::DileptonMet*)
+   {
+      return GenerateInitInstanceLocal((::HH::DileptonMet*)0);
+   }
+   // Static variable to force the class initialization
+   static ::ROOT::TGenericClassInfo *_R__UNIQUE_(Init) = GenerateInitInstanceLocal((const ::HH::DileptonMet*)0x0); R__UseDummy(_R__UNIQUE_(Init));
+
+   // Dictionary for non-ClassDef classes
+   static TClass *HHcLcLDileptonMet_Dictionary() {
+      TClass* theClass =::ROOT::GenerateInitInstanceLocal((const ::HH::DileptonMet*)0x0)->GetClass();
+      HHcLcLDileptonMet_TClassManip(theClass);
+   return theClass;
+   }
+
+   static void HHcLcLDileptonMet_TClassManip(TClass* ){
    }
 
 } // end of namespace ROOT
@@ -340,7 +299,7 @@ namespace ROOT {
       return GenerateInitInstanceLocal((::HH::Dijet*)0);
    }
    // Static variable to force the class initialization
-   static ::ROOT::TGenericClassInfo *_R__UNIQUE_DICT_(Init) = GenerateInitInstanceLocal((const ::HH::Dijet*)0x0); R__UseDummy(_R__UNIQUE_DICT_(Init));
+   static ::ROOT::TGenericClassInfo *_R__UNIQUE_(Init) = GenerateInitInstanceLocal((const ::HH::Dijet*)0x0); R__UseDummy(_R__UNIQUE_(Init));
 
    // Dictionary for non-ClassDef classes
    static TClass *HHcLcLDijet_Dictionary() {
@@ -385,7 +344,7 @@ namespace ROOT {
       return GenerateInitInstanceLocal((::HH::MELAAngles*)0);
    }
    // Static variable to force the class initialization
-   static ::ROOT::TGenericClassInfo *_R__UNIQUE_DICT_(Init) = GenerateInitInstanceLocal((const ::HH::MELAAngles*)0x0); R__UseDummy(_R__UNIQUE_DICT_(Init));
+   static ::ROOT::TGenericClassInfo *_R__UNIQUE_(Init) = GenerateInitInstanceLocal((const ::HH::MELAAngles*)0x0); R__UseDummy(_R__UNIQUE_(Init));
 
    // Dictionary for non-ClassDef classes
    static TClass *HHcLcLMELAAngles_Dictionary() {
@@ -400,70 +359,90 @@ namespace ROOT {
 } // end of namespace ROOT
 
 namespace ROOT {
-   static TClass *HHcLcLDileptonMetDijet_Dictionary();
-   static void HHcLcLDileptonMetDijet_TClassManip(TClass*);
-   static void *new_HHcLcLDileptonMetDijet(void *p = 0);
-   static void *newArray_HHcLcLDileptonMetDijet(Long_t size, void *p);
-   static void delete_HHcLcLDileptonMetDijet(void *p);
-   static void deleteArray_HHcLcLDileptonMetDijet(void *p);
-   static void destruct_HHcLcLDileptonMetDijet(void *p);
+   static TClass *HHcLcLDilepton_Dictionary();
+   static void HHcLcLDilepton_TClassManip(TClass*);
+   static void *new_HHcLcLDilepton(void *p = 0);
+   static void *newArray_HHcLcLDilepton(Long_t size, void *p);
+   static void delete_HHcLcLDilepton(void *p);
+   static void deleteArray_HHcLcLDilepton(void *p);
+   static void destruct_HHcLcLDilepton(void *p);
 
    // Function generating the singleton type initializer
-   static TGenericClassInfo *GenerateInitInstanceLocal(const ::HH::DileptonMetDijet*)
+   static TGenericClassInfo *GenerateInitInstanceLocal(const ::HH::Dilepton*)
    {
-      ::HH::DileptonMetDijet *ptr = 0;
-      static ::TVirtualIsAProxy* isa_proxy = new ::TIsAProxy(typeid(::HH::DileptonMetDijet));
+      ::HH::Dilepton *ptr = 0;
+      static ::TVirtualIsAProxy* isa_proxy = new ::TIsAProxy(typeid(::HH::Dilepton));
       static ::ROOT::TGenericClassInfo 
-         instance("HH::DileptonMetDijet", "include/cp3Types.h", 179,
-                  typeid(::HH::DileptonMetDijet), ::ROOT::Internal::DefineBehavior(ptr, ptr),
-                  &HHcLcLDileptonMetDijet_Dictionary, isa_proxy, 4,
-                  sizeof(::HH::DileptonMetDijet) );
-      instance.SetNew(&new_HHcLcLDileptonMetDijet);
-      instance.SetNewArray(&newArray_HHcLcLDileptonMetDijet);
-      instance.SetDelete(&delete_HHcLcLDileptonMetDijet);
-      instance.SetDeleteArray(&deleteArray_HHcLcLDileptonMetDijet);
-      instance.SetDestructor(&destruct_HHcLcLDileptonMetDijet);
+         instance("HH::Dilepton", "include/cp3Types.h", 38,
+                  typeid(::HH::Dilepton), ::ROOT::Internal::DefineBehavior(ptr, ptr),
+                  &HHcLcLDilepton_Dictionary, isa_proxy, 4,
+                  sizeof(::HH::Dilepton) );
+      instance.SetNew(&new_HHcLcLDilepton);
+      instance.SetNewArray(&newArray_HHcLcLDilepton);
+      instance.SetDelete(&delete_HHcLcLDilepton);
+      instance.SetDeleteArray(&deleteArray_HHcLcLDilepton);
+      instance.SetDestructor(&destruct_HHcLcLDilepton);
       return &instance;
    }
-   TGenericClassInfo *GenerateInitInstance(const ::HH::DileptonMetDijet*)
+   TGenericClassInfo *GenerateInitInstance(const ::HH::Dilepton*)
    {
-      return GenerateInitInstanceLocal((::HH::DileptonMetDijet*)0);
+      return GenerateInitInstanceLocal((::HH::Dilepton*)0);
    }
    // Static variable to force the class initialization
-   static ::ROOT::TGenericClassInfo *_R__UNIQUE_DICT_(Init) = GenerateInitInstanceLocal((const ::HH::DileptonMetDijet*)0x0); R__UseDummy(_R__UNIQUE_DICT_(Init));
+   static ::ROOT::TGenericClassInfo *_R__UNIQUE_(Init) = GenerateInitInstanceLocal((const ::HH::Dilepton*)0x0); R__UseDummy(_R__UNIQUE_(Init));
 
    // Dictionary for non-ClassDef classes
-   static TClass *HHcLcLDileptonMetDijet_Dictionary() {
-      TClass* theClass =::ROOT::GenerateInitInstanceLocal((const ::HH::DileptonMetDijet*)0x0)->GetClass();
-      HHcLcLDileptonMetDijet_TClassManip(theClass);
+   static TClass *HHcLcLDilepton_Dictionary() {
+      TClass* theClass =::ROOT::GenerateInitInstanceLocal((const ::HH::Dilepton*)0x0)->GetClass();
+      HHcLcLDilepton_TClassManip(theClass);
    return theClass;
    }
 
-   static void HHcLcLDileptonMetDijet_TClassManip(TClass* ){
+   static void HHcLcLDilepton_TClassManip(TClass* ){
    }
 
 } // end of namespace ROOT
 
 namespace ROOT {
-   // Wrappers around operator new
-   static void *new_pairlEsignedsPcharcOsignedsPchargR(void *p) {
-      return  p ? ::new((::ROOT::Internal::TOperatorNewHelper*)p) pair<signed char,signed char> : new pair<signed char,signed char>;
+   static TClass *pairlEsignedsPcharcOsignedsPchargR_Dictionary();
+   static void pairlEsignedsPcharcOsignedsPchargR_TClassManip(TClass*);
+   static void *new_pairlEsignedsPcharcOsignedsPchargR(void *p = 0);
+   static void *newArray_pairlEsignedsPcharcOsignedsPchargR(Long_t size, void *p);
+   static void delete_pairlEsignedsPcharcOsignedsPchargR(void *p);
+   static void deleteArray_pairlEsignedsPcharcOsignedsPchargR(void *p);
+   static void destruct_pairlEsignedsPcharcOsignedsPchargR(void *p);
+
+   // Function generating the singleton type initializer
+   static TGenericClassInfo *GenerateInitInstanceLocal(const pair<signed char,signed char>*)
+   {
+      pair<signed char,signed char> *ptr = 0;
+      static ::TVirtualIsAProxy* isa_proxy = new ::TIsAProxy(typeid(pair<signed char,signed char>));
+      static ::ROOT::TGenericClassInfo 
+         instance("pair<signed char,signed char>", "string", 96,
+                  typeid(pair<signed char,signed char>), ::ROOT::Internal::DefineBehavior(ptr, ptr),
+                  &pairlEsignedsPcharcOsignedsPchargR_Dictionary, isa_proxy, 4,
+                  sizeof(pair<signed char,signed char>) );
+      instance.SetNew(&new_pairlEsignedsPcharcOsignedsPchargR);
+      instance.SetNewArray(&newArray_pairlEsignedsPcharcOsignedsPchargR);
+      instance.SetDelete(&delete_pairlEsignedsPcharcOsignedsPchargR);
+      instance.SetDeleteArray(&deleteArray_pairlEsignedsPcharcOsignedsPchargR);
+      instance.SetDestructor(&destruct_pairlEsignedsPcharcOsignedsPchargR);
+      return &instance;
    }
-   static void *newArray_pairlEsignedsPcharcOsignedsPchargR(Long_t nElements, void *p) {
-      return p ? ::new((::ROOT::Internal::TOperatorNewHelper*)p) pair<signed char,signed char>[nElements] : new pair<signed char,signed char>[nElements];
+   // Static variable to force the class initialization
+   static ::ROOT::TGenericClassInfo *_R__UNIQUE_(Init) = GenerateInitInstanceLocal((const pair<signed char,signed char>*)0x0); R__UseDummy(_R__UNIQUE_(Init));
+
+   // Dictionary for non-ClassDef classes
+   static TClass *pairlEsignedsPcharcOsignedsPchargR_Dictionary() {
+      TClass* theClass =::ROOT::GenerateInitInstanceLocal((const pair<signed char,signed char>*)0x0)->GetClass();
+      pairlEsignedsPcharcOsignedsPchargR_TClassManip(theClass);
+   return theClass;
    }
-   // Wrapper around operator delete
-   static void delete_pairlEsignedsPcharcOsignedsPchargR(void *p) {
-      delete ((pair<signed char,signed char>*)p);
+
+   static void pairlEsignedsPcharcOsignedsPchargR_TClassManip(TClass* ){
    }
-   static void deleteArray_pairlEsignedsPcharcOsignedsPchargR(void *p) {
-      delete [] ((pair<signed char,signed char>*)p);
-   }
-   static void destruct_pairlEsignedsPcharcOsignedsPchargR(void *p) {
-      typedef pair<signed char,signed char> current_t;
-      ((current_t*)p)->~current_t();
-   }
-} // end of namespace ROOT for class pair<signed char,signed char>
+
+} // end of namespace ROOT
 
 namespace ROOT {
    // Wrappers around operator new
@@ -488,24 +467,24 @@ namespace ROOT {
 
 namespace ROOT {
    // Wrappers around operator new
-   static void *new_HHcLcLDilepton(void *p) {
-      return  p ? ::new((::ROOT::Internal::TOperatorNewHelper*)p) ::HH::Dilepton : new ::HH::Dilepton;
+   static void *new_HHcLcLJet(void *p) {
+      return  p ? ::new((::ROOT::Internal::TOperatorNewHelper*)p) ::HH::Jet : new ::HH::Jet;
    }
-   static void *newArray_HHcLcLDilepton(Long_t nElements, void *p) {
-      return p ? ::new((::ROOT::Internal::TOperatorNewHelper*)p) ::HH::Dilepton[nElements] : new ::HH::Dilepton[nElements];
+   static void *newArray_HHcLcLJet(Long_t nElements, void *p) {
+      return p ? ::new((::ROOT::Internal::TOperatorNewHelper*)p) ::HH::Jet[nElements] : new ::HH::Jet[nElements];
    }
    // Wrapper around operator delete
-   static void delete_HHcLcLDilepton(void *p) {
-      delete ((::HH::Dilepton*)p);
+   static void delete_HHcLcLJet(void *p) {
+      delete ((::HH::Jet*)p);
    }
-   static void deleteArray_HHcLcLDilepton(void *p) {
-      delete [] ((::HH::Dilepton*)p);
+   static void deleteArray_HHcLcLJet(void *p) {
+      delete [] ((::HH::Jet*)p);
    }
-   static void destruct_HHcLcLDilepton(void *p) {
-      typedef ::HH::Dilepton current_t;
+   static void destruct_HHcLcLJet(void *p) {
+      typedef ::HH::Jet current_t;
       ((current_t*)p)->~current_t();
    }
-} // end of namespace ROOT for class ::HH::Dilepton
+} // end of namespace ROOT for class ::HH::Jet
 
 namespace ROOT {
    // Wrappers around operator new
@@ -530,6 +509,27 @@ namespace ROOT {
 
 namespace ROOT {
    // Wrappers around operator new
+   static void *new_HHcLcLDileptonMetDijet(void *p) {
+      return  p ? ::new((::ROOT::Internal::TOperatorNewHelper*)p) ::HH::DileptonMetDijet : new ::HH::DileptonMetDijet;
+   }
+   static void *newArray_HHcLcLDileptonMetDijet(Long_t nElements, void *p) {
+      return p ? ::new((::ROOT::Internal::TOperatorNewHelper*)p) ::HH::DileptonMetDijet[nElements] : new ::HH::DileptonMetDijet[nElements];
+   }
+   // Wrapper around operator delete
+   static void delete_HHcLcLDileptonMetDijet(void *p) {
+      delete ((::HH::DileptonMetDijet*)p);
+   }
+   static void deleteArray_HHcLcLDileptonMetDijet(void *p) {
+      delete [] ((::HH::DileptonMetDijet*)p);
+   }
+   static void destruct_HHcLcLDileptonMetDijet(void *p) {
+      typedef ::HH::DileptonMetDijet current_t;
+      ((current_t*)p)->~current_t();
+   }
+} // end of namespace ROOT for class ::HH::DileptonMetDijet
+
+namespace ROOT {
+   // Wrappers around operator new
    static void *new_HHcLcLDileptonMet(void *p) {
       return  p ? ::new((::ROOT::Internal::TOperatorNewHelper*)p) ::HH::DileptonMet : new ::HH::DileptonMet;
    }
@@ -548,27 +548,6 @@ namespace ROOT {
       ((current_t*)p)->~current_t();
    }
 } // end of namespace ROOT for class ::HH::DileptonMet
-
-namespace ROOT {
-   // Wrappers around operator new
-   static void *new_HHcLcLJet(void *p) {
-      return  p ? ::new((::ROOT::Internal::TOperatorNewHelper*)p) ::HH::Jet : new ::HH::Jet;
-   }
-   static void *newArray_HHcLcLJet(Long_t nElements, void *p) {
-      return p ? ::new((::ROOT::Internal::TOperatorNewHelper*)p) ::HH::Jet[nElements] : new ::HH::Jet[nElements];
-   }
-   // Wrapper around operator delete
-   static void delete_HHcLcLJet(void *p) {
-      delete ((::HH::Jet*)p);
-   }
-   static void deleteArray_HHcLcLJet(void *p) {
-      delete [] ((::HH::Jet*)p);
-   }
-   static void destruct_HHcLcLJet(void *p) {
-      typedef ::HH::Jet current_t;
-      ((current_t*)p)->~current_t();
-   }
-} // end of namespace ROOT for class ::HH::Jet
 
 namespace ROOT {
    // Wrappers around operator new
@@ -614,24 +593,45 @@ namespace ROOT {
 
 namespace ROOT {
    // Wrappers around operator new
-   static void *new_HHcLcLDileptonMetDijet(void *p) {
-      return  p ? ::new((::ROOT::Internal::TOperatorNewHelper*)p) ::HH::DileptonMetDijet : new ::HH::DileptonMetDijet;
+   static void *new_HHcLcLDilepton(void *p) {
+      return  p ? ::new((::ROOT::Internal::TOperatorNewHelper*)p) ::HH::Dilepton : new ::HH::Dilepton;
    }
-   static void *newArray_HHcLcLDileptonMetDijet(Long_t nElements, void *p) {
-      return p ? ::new((::ROOT::Internal::TOperatorNewHelper*)p) ::HH::DileptonMetDijet[nElements] : new ::HH::DileptonMetDijet[nElements];
+   static void *newArray_HHcLcLDilepton(Long_t nElements, void *p) {
+      return p ? ::new((::ROOT::Internal::TOperatorNewHelper*)p) ::HH::Dilepton[nElements] : new ::HH::Dilepton[nElements];
    }
    // Wrapper around operator delete
-   static void delete_HHcLcLDileptonMetDijet(void *p) {
-      delete ((::HH::DileptonMetDijet*)p);
+   static void delete_HHcLcLDilepton(void *p) {
+      delete ((::HH::Dilepton*)p);
    }
-   static void deleteArray_HHcLcLDileptonMetDijet(void *p) {
-      delete [] ((::HH::DileptonMetDijet*)p);
+   static void deleteArray_HHcLcLDilepton(void *p) {
+      delete [] ((::HH::Dilepton*)p);
    }
-   static void destruct_HHcLcLDileptonMetDijet(void *p) {
-      typedef ::HH::DileptonMetDijet current_t;
+   static void destruct_HHcLcLDilepton(void *p) {
+      typedef ::HH::Dilepton current_t;
       ((current_t*)p)->~current_t();
    }
-} // end of namespace ROOT for class ::HH::DileptonMetDijet
+} // end of namespace ROOT for class ::HH::Dilepton
+
+namespace ROOT {
+   // Wrappers around operator new
+   static void *new_pairlEsignedsPcharcOsignedsPchargR(void *p) {
+      return  p ? ::new((::ROOT::Internal::TOperatorNewHelper*)p) pair<signed char,signed char> : new pair<signed char,signed char>;
+   }
+   static void *newArray_pairlEsignedsPcharcOsignedsPchargR(Long_t nElements, void *p) {
+      return p ? ::new((::ROOT::Internal::TOperatorNewHelper*)p) pair<signed char,signed char>[nElements] : new pair<signed char,signed char>[nElements];
+   }
+   // Wrapper around operator delete
+   static void delete_pairlEsignedsPcharcOsignedsPchargR(void *p) {
+      delete ((pair<signed char,signed char>*)p);
+   }
+   static void deleteArray_pairlEsignedsPcharcOsignedsPchargR(void *p) {
+      delete [] ((pair<signed char,signed char>*)p);
+   }
+   static void destruct_pairlEsignedsPcharcOsignedsPchargR(void *p) {
+      typedef pair<signed char,signed char> current_t;
+      ((current_t*)p)->~current_t();
+   }
+} // end of namespace ROOT for class pair<signed char,signed char>
 
 namespace ROOT {
    static TClass *vectorlEHHcLcLMetgR_Dictionary();
@@ -648,7 +648,7 @@ namespace ROOT {
       vector<HH::Met> *ptr = 0;
       static ::TVirtualIsAProxy* isa_proxy = new ::TIsAProxy(typeid(vector<HH::Met>));
       static ::ROOT::TGenericClassInfo 
-         instance("vector<HH::Met>", -2, "vector", 216,
+         instance("vector<HH::Met>", -2, "vector", 214,
                   typeid(vector<HH::Met>), ::ROOT::Internal::DefineBehavior(ptr, ptr),
                   &vectorlEHHcLcLMetgR_Dictionary, isa_proxy, 4,
                   sizeof(vector<HH::Met>) );
@@ -661,7 +661,7 @@ namespace ROOT {
       return &instance;
    }
    // Static variable to force the class initialization
-   static ::ROOT::TGenericClassInfo *_R__UNIQUE_DICT_(Init) = GenerateInitInstanceLocal((const vector<HH::Met>*)0x0); R__UseDummy(_R__UNIQUE_DICT_(Init));
+   static ::ROOT::TGenericClassInfo *_R__UNIQUE_(Init) = GenerateInitInstanceLocal((const vector<HH::Met>*)0x0); R__UseDummy(_R__UNIQUE_(Init));
 
    // Dictionary for non-ClassDef classes
    static TClass *vectorlEHHcLcLMetgR_Dictionary() {
@@ -711,7 +711,7 @@ namespace ROOT {
       vector<HH::Lepton> *ptr = 0;
       static ::TVirtualIsAProxy* isa_proxy = new ::TIsAProxy(typeid(vector<HH::Lepton>));
       static ::ROOT::TGenericClassInfo 
-         instance("vector<HH::Lepton>", -2, "vector", 216,
+         instance("vector<HH::Lepton>", -2, "vector", 214,
                   typeid(vector<HH::Lepton>), ::ROOT::Internal::DefineBehavior(ptr, ptr),
                   &vectorlEHHcLcLLeptongR_Dictionary, isa_proxy, 4,
                   sizeof(vector<HH::Lepton>) );
@@ -724,7 +724,7 @@ namespace ROOT {
       return &instance;
    }
    // Static variable to force the class initialization
-   static ::ROOT::TGenericClassInfo *_R__UNIQUE_DICT_(Init) = GenerateInitInstanceLocal((const vector<HH::Lepton>*)0x0); R__UseDummy(_R__UNIQUE_DICT_(Init));
+   static ::ROOT::TGenericClassInfo *_R__UNIQUE_(Init) = GenerateInitInstanceLocal((const vector<HH::Lepton>*)0x0); R__UseDummy(_R__UNIQUE_(Init));
 
    // Dictionary for non-ClassDef classes
    static TClass *vectorlEHHcLcLLeptongR_Dictionary() {
@@ -774,7 +774,7 @@ namespace ROOT {
       vector<HH::Jet> *ptr = 0;
       static ::TVirtualIsAProxy* isa_proxy = new ::TIsAProxy(typeid(vector<HH::Jet>));
       static ::ROOT::TGenericClassInfo 
-         instance("vector<HH::Jet>", -2, "vector", 216,
+         instance("vector<HH::Jet>", -2, "vector", 214,
                   typeid(vector<HH::Jet>), ::ROOT::Internal::DefineBehavior(ptr, ptr),
                   &vectorlEHHcLcLJetgR_Dictionary, isa_proxy, 4,
                   sizeof(vector<HH::Jet>) );
@@ -787,7 +787,7 @@ namespace ROOT {
       return &instance;
    }
    // Static variable to force the class initialization
-   static ::ROOT::TGenericClassInfo *_R__UNIQUE_DICT_(Init) = GenerateInitInstanceLocal((const vector<HH::Jet>*)0x0); R__UseDummy(_R__UNIQUE_DICT_(Init));
+   static ::ROOT::TGenericClassInfo *_R__UNIQUE_(Init) = GenerateInitInstanceLocal((const vector<HH::Jet>*)0x0); R__UseDummy(_R__UNIQUE_(Init));
 
    // Dictionary for non-ClassDef classes
    static TClass *vectorlEHHcLcLJetgR_Dictionary() {
@@ -837,7 +837,7 @@ namespace ROOT {
       vector<HH::DileptonMetDijet> *ptr = 0;
       static ::TVirtualIsAProxy* isa_proxy = new ::TIsAProxy(typeid(vector<HH::DileptonMetDijet>));
       static ::ROOT::TGenericClassInfo 
-         instance("vector<HH::DileptonMetDijet>", -2, "vector", 216,
+         instance("vector<HH::DileptonMetDijet>", -2, "vector", 214,
                   typeid(vector<HH::DileptonMetDijet>), ::ROOT::Internal::DefineBehavior(ptr, ptr),
                   &vectorlEHHcLcLDileptonMetDijetgR_Dictionary, isa_proxy, 4,
                   sizeof(vector<HH::DileptonMetDijet>) );
@@ -850,7 +850,7 @@ namespace ROOT {
       return &instance;
    }
    // Static variable to force the class initialization
-   static ::ROOT::TGenericClassInfo *_R__UNIQUE_DICT_(Init) = GenerateInitInstanceLocal((const vector<HH::DileptonMetDijet>*)0x0); R__UseDummy(_R__UNIQUE_DICT_(Init));
+   static ::ROOT::TGenericClassInfo *_R__UNIQUE_(Init) = GenerateInitInstanceLocal((const vector<HH::DileptonMetDijet>*)0x0); R__UseDummy(_R__UNIQUE_(Init));
 
    // Dictionary for non-ClassDef classes
    static TClass *vectorlEHHcLcLDileptonMetDijetgR_Dictionary() {
@@ -894,7 +894,7 @@ namespace {
     };
     static const char* includePaths[] = {
 "./",
-"/cvmfs/cp3.uclouvain.be/root/root-6.10.08-sl6_amd64_gcc72/include",
+"/cvmfs/cms.cern.ch/slc6_amd64_gcc530/lcg/root/6.06.00-ikhhed6/include",
 "/nfs/scratch/fynu/delcourt/phase2HH/ntupleToCP3/",
 0
     };
@@ -904,18 +904,18 @@ namespace {
 #pragma clang diagnostic ignored "-Wignored-attributes"
 #pragma clang diagnostic ignored "-Wreturn-type-c-linkage"
 extern int __Cling_Autoloading_Map;
-namespace std{template <typename _T1, typename _T2> struct __attribute__((annotate("$clingAutoload$bits/stl_pair.h")))  __attribute__((annotate("$clingAutoload$string")))  pair;
+namespace HH{struct __attribute__((annotate("$clingAutoload$include/Linkdef.h")))  Lepton;}
+namespace HH{struct __attribute__((annotate("$clingAutoload$include/Linkdef.h")))  Jet;}
+namespace HH{struct __attribute__((annotate("$clingAutoload$include/Linkdef.h")))  Met;}
+namespace HH{struct __attribute__((annotate("$clingAutoload$include/Linkdef.h")))  DileptonMetDijet;}
+namespace HH{struct __attribute__((annotate("$clingAutoload$include/Linkdef.h")))  DileptonMet;}
+namespace HH{struct __attribute__((annotate("$clingAutoload$include/Linkdef.h")))  Dijet;}
+namespace HH{struct __attribute__((annotate("$clingAutoload$include/Linkdef.h")))  MELAAngles;}
+namespace HH{struct __attribute__((annotate("$clingAutoload$include/Linkdef.h")))  Dilepton;}
+namespace std{template <class _T1, class _T2> struct __attribute__((annotate("$clingAutoload$string")))  pair;
 }
-namespace HH{struct __attribute__((annotate("$clingAutoload$include/cp3Types.h")))  DileptonMetDijet;}
-namespace std{template <typename _Tp> class __attribute__((annotate("$clingAutoload$bits/allocator.h")))  __attribute__((annotate("$clingAutoload$string")))  allocator;
+namespace std{template <typename _Tp> class __attribute__((annotate("$clingAutoload$string")))  allocator;
 }
-namespace HH{struct __attribute__((annotate("$clingAutoload$include/cp3Types.h")))  Met;}
-namespace HH{struct __attribute__((annotate("$clingAutoload$include/cp3Types.h")))  Jet;}
-namespace HH{struct __attribute__((annotate("$clingAutoload$include/cp3Types.h")))  Lepton;}
-namespace HH{struct __attribute__((annotate("$clingAutoload$include/cp3Types.h")))  Dilepton;}
-namespace HH{struct __attribute__((annotate("$clingAutoload$include/cp3Types.h")))  DileptonMet;}
-namespace HH{struct __attribute__((annotate("$clingAutoload$include/cp3Types.h")))  Dijet;}
-namespace HH{struct __attribute__((annotate("$clingAutoload$include/cp3Types.h")))  MELAAngles;}
 )DICTFWDDCLS";
     static const char* payloadCode = R"DICTPAYLOAD(
 #line 1 "Dict dictionary payload"
@@ -927,39 +927,6 @@ namespace HH{struct __attribute__((annotate("$clingAutoload$include/cp3Types.h")
 #define _BACKWARD_BACKWARD_WARNING_H
 #include "include/MiniEvent.h"
 #include "include/cp3Types.h"
-#pragma once
-
-#include "include/cp3Types.h"
-#include <TROOT.h>
-#include <vector>
-#include <map>
-#include <string>
-#include <utility>
-
-
-#ifdef __MAKECINT__
-#pragma link off all globals;
-#pragma link off all classes;
-#pragma link off all functions;
-#pragma link C++ nestedclass;
-#pragma link C++ nestedtypedef;
-
-
-#pragma link C++ class HH::Lepton+;
-#pragma link C++ class HH::Jet+;
-#pragma link C++ class HH::Met+;
-#pragma link C++ class HH::DileptonMetDijet+;
-#pragma link C++ class HH::DileptonMet+;
-#pragma link C++ class HH::Dijet+;
-#pragma link C++ class HH::MELAAngles+;
-#pragma link C++ class HH::Dilepton+;
-#pragma link C++ class std::pair<signed char,signed char>+;
-
-#pragma link C++ class std::vector<HH::Lepton>+;
-#pragma link C++ class std::vector<HH::Jet>+;
-#pragma link C++ class std::vector<HH::Met>+;
-#pragma link C++ class std::vector<HH::DileptonMetDijet>+;
-#endif
 
 #undef  _BACKWARD_BACKWARD_WARNING_H
 )DICTPAYLOAD";

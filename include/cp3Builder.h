@@ -14,6 +14,7 @@ class cp3Builder{
 
     void clean();
     void BuildLeptons();
+    void BuildLeptonSystematics();
     void BuildDiLeptons();
     void BuildJets();
     void BuildDiJets();
@@ -31,6 +32,16 @@ class cp3Builder{
     float  sum_event_weight         ;
     float  event_pu_weight          ;
     float  event_btag_weight        ;
+
+    bool event_is_data            ;
+    std::vector <float> event_scale_weights;
+
+    std::vector <std::vector <float> > jet_sf_cmvav2_heavyjet_medium; 
+    std::vector <std::vector <float> > jet_sf_cmvav2_lightjet_medium; 
+    std::vector <std::vector <float> > electron_sf;
+    std::vector <std::vector <float> > muon_sf;
+    std::vector <std::vector <float> > leptonOnes; //Vector full of vectors of ones for missing systematics
+
     bool hh_mumu_category         ;
     bool hh_mumu_fire_trigger_cut ;
     bool hh_muel_category         ;
@@ -39,6 +50,9 @@ class cp3Builder{
     bool hh_elmu_fire_trigger_cut ;
     bool hh_elel_category         ;
     bool hh_elel_fire_trigger_cut ;
+
+
+
     HH::LorentzVector met_p4;
     std::vector < HH::Lepton   >   HHLept_  ;
     std::vector < HH::Jet      >   HHJet_   ;
