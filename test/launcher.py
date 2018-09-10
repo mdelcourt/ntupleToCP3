@@ -4,13 +4,15 @@ baseDirIn = "/home/ucl/cp3/delcourt/storage/HH_HLLHC/DELPHES_YR/"
 baseDirOut = "/home/ucl/cp3/delcourt/storage/HH_HLLHC/CP3_NTUPLES_YR/"
 dumpDir    = baseDirOut+"dump/"
 
-dirList = []
-for f in os.listdir(baseDirIn):
-  if "GluGlu" in f:
-    continue
-  else:
-    dirList.append(f)
+#dirList = []
+#for f in os.listdir(baseDirIn):
+#  if "GluGlu" in f:
+#    continue
+#  else:
+#    dirList.append(f)
 #dirList = ["GluGluToHHTo2B2VTo2L2Nu_node_SM_14TeV-madgraph_200PU"]
+dirList = os.listdir(baseDirIn)
+
 
 pList = []
 print dirList
@@ -44,7 +46,7 @@ print "%s jobs written to json"%len(jobList)
 print "Preparing executable..."
 if "EXEC" in os.listdir("."):
   os.system("rm -r EXEC")
-  os.system("mkdir EXEC")
+os.system("mkdir EXEC")
 os.system("cp -r ../include EXEC/include")
 os.system("cp ../Makefile EXEC")
 os.system("mkdir EXEC/src")
@@ -73,6 +75,8 @@ postProcess = ""
 for job in jobList:
   for p in job:
     postProcess += "mv %s/%s %s\n"%(dumpDir,p[1].split("/")[-1],p[1])
+    postProcess += "mv %s/JECUP_%s %s\n"%(dumpDir,p[1].split("/")[-1],p[1].replace("/p2ntuple","_jecUp/p2ntuple"))
+    postProcess += "mv %s/JECDOWN%s %s\n"%(dumpDir,p[1].split("/")[-1],p[1].replace("/p2ntuple","_jecDown/p2ntuple"))
 
 with open("postSlurm.sh","w") as f:
   f.write(postProcess)

@@ -25,6 +25,7 @@
 #pragma link C++ class HH::MELAAngles+;
 #pragma link C++ class HH::Dilepton+;
 #pragma link C++ class std::pair<signed char,signed char>+;
+#pragma link C++ class std::vector <std::vector <float> >+;
 
 #pragma link C++ class std::vector<HH::Lepton>+;
 #pragma link C++ class std::vector<HH::Jet>+;

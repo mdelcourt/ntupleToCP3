@@ -12,7 +12,7 @@ class Converter{
    std::string fileOut_;
   
   public:
-    Converter(std::string fileIn, std::string fileOut, bool reweightBtag = true);
+    Converter(std::string fileIn, std::string fileOut, bool reweightBtag = true, float jec = 1.);
     
     void test();
     void testProducer();

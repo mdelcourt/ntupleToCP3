@@ -26,8 +26,8 @@ class cp3Builder{
     float HT_;
     int nBJets_, nMuons_, nElectrons_, nJets_;
     
-    bool reweightBtag_;
-
+    bool   reweightBtag_;
+    bool   doBtagSyst_;
     float  event_weight             ;
     float  sum_event_weight         ;
     float  event_pu_weight          ;
@@ -51,7 +51,8 @@ class cp3Builder{
     bool hh_elel_category         ;
     bool hh_elel_fire_trigger_cut ;
 
-
+    bool  applyJec;
+    float jec;
 
     HH::LorentzVector met_p4;
     std::vector < HH::Lepton   >   HHLept_  ;
@@ -63,7 +64,7 @@ class cp3Builder{
     std::vector < HH::DileptonMetDijet> HHllMetjj_;
 
   public:
-    cp3Builder(MiniEvent_t * e_, std::string fName, bool reweightBtag);
+    cp3Builder(MiniEvent_t * e_, std::string fName, bool reweightBtag, float jecValue = 1.);
     void Build();
     void InitializeTree(TTree *t);
     void Write(TTree * t);

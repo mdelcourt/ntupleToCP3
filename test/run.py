@@ -31,3 +31,9 @@ for j in job:
   cmd = "./EXEC/bin/ntupleToCp3.out %s %s"%(j[0],j[1].split("/")[-1])
   print cmd
   os.system(cmd)
+  cmd = "./EXEC/bin/ntupleToCp3_jec.out %s JECUP_%s 1.035"%(j[0],j[1].split("/")[-1])
+  print cmd
+  os.system(cmd)
+  cmd = "./EXEC/bin/ntupleToCp3_jec.out %s JECDOWN_%s 0.965"%(j[0],j[1].split("/")[-1])
+  print cmd
+  os.system(cmd)

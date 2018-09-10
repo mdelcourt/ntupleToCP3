@@ -12,18 +12,19 @@ vector <string> particles = {"0","d","u","s","c","b","t","b'","t'","9","10","e",
   "19","20","g","gamma","Z","W","H","26","27","28","29"};
 
 
-cp3Builder::cp3Builder(MiniEvent_t * e_, string fName, bool reweightBtag){
+cp3Builder::cp3Builder(MiniEvent_t * e_, string fName, bool reweightBtag, float jecValue){
+  jec = jecValue;
+  applyJec = (jecValue != 1.);
   ev=e_;
   reweightBtag_ = reweightBtag;
   sum_event_weight = 0;
   event_is_data = false;
-  cout<<"here?"<<endl;
   event_scale_weights.resize(6,1);
-  cout<<"survived :-)"<<endl;
   isDY_ = (fName.find("DY") != std::string::npos );
   cout<<"This sample is";
   if (!isDY_) cout<<" not";
   cout<<" DY."<<endl;
+  doBtagSyst_ = true;
 }
 
 void cp3Builder::clean(){
@@ -59,35 +60,47 @@ void cp3Builder::BuildLeptons(){
   //Start with electrons.
   //FIXME : Why so tight ?
   //FIXME : No isolation ?
+  
+  int iEle = 0;
   for (int eleId = 0; eleId < ev->nte; eleId++){
-    if (ev->te_pt[eleId] < 15){
+    if (ev->te_pt[eleId] < 15)
+      continue;
+    float eta = ev->te_eta[eleId];
+    float iso = ev->te_relIso[eleId];
+    if(eta  > 2.8 || (eta > 1.444 && eta < 1.5666) )
+      continue;
+    if ((eta < 1.444 && iso > 0.559) || (eta > 1.566 && iso > 0.853))
       continue;
     
-    }
     Lepton l;
+    l.idx  = iEle;
     l.p4 = LorentzVector(ev->te_pt[eleId],ev->te_eta[eleId],ev->te_phi[eleId],ev->te_mass[eleId]);
     l.p4.SetE(sqrt(pow(l.p4.P(),2) + pow(ev->te_mass[eleId],2)));
     l.isEl = true;
     l.charge = ev->te_ch[eleId];
+    iEle++;
     HHLept_.push_back(l);
   }
   // And now, muons. FIXME: tight ?
 
-
-  for (int muonId = 0; muonId < ev->ntm; muonId++){
-    if (ev->tm_pt[muonId] < 10)
+  int iMu = 0;
+  for (int muonId = 0; muonId < ev->nlm; muonId++){
+    if (ev->lm_pt[muonId] < 10)
       continue;
-    if(ev->tm_relIso[muonId] > .25) //Iso L/T : .25/.15
+    if(ev->lm_relIso[muonId] > .25) //Iso L/T : .25/.15
+      continue;
+    if(ev->lm_eta[muonId] > 2.8) //Iso L/T : .25/.15
       continue;
     Lepton l;
-    l.p4= LorentzVector(ev->tm_pt[muonId],ev->tm_eta[muonId],ev->tm_phi[muonId],ev->tm_mass[muonId]);
-    l.p4.SetE(sqrt(pow(l.p4.P(),2) + pow(ev->tm_mass[muonId],2)));
+    l.p4= LorentzVector(ev->lm_pt[muonId],ev->lm_eta[muonId],ev->lm_phi[muonId],ev->lm_mass[muonId]);
+    l.p4.SetE(sqrt(pow(l.p4.P(),2) + pow(ev->lm_mass[muonId],2)));
 //    l.p4.SetPtEtaPhiM(ev->te_pt[eleId],ev->te_eta[eleId],ev->te_phi[eleId],ev->te_mass[eleId]);
     l.isMu = true;
-    l.charge = ev->tm_ch[muonId];
+    l.idx = iMu;
+    l.charge = ev->lm_ch[muonId];
+    iMu++;
     HHLept_.push_back(l);
   }
-   std::sort(HHLept_.begin(), HHLept_.end(), [](const HH::Lepton& lep1, const HH::Lepton& lep2) { return lep1.p4.Pt() > lep2.p4.Pt(); });
 
 }
 
@@ -111,16 +124,18 @@ void cp3Builder::BuildLeptonSystematics(){
     sf.push_back(1.-w);
     if (l.isEl){
       electron_sf.push_back(sf);
-      muon_sf.push_back(one);
+     //muon_sf.push_back(one);
     }
     else{
-      electron_sf.push_back(one);
+      //electron_sf.push_back(one);
       muon_sf.push_back(sf);
     }
     leptonOnes.push_back(one);
     sf.clear();
   }
 
+  // We only sort here to keep order in systematics
+   std::sort(HHLept_.begin(), HHLept_.end(), [](const HH::Lepton& lep1, const HH::Lepton& lep2) { return lep1.p4.Pt() > lep2.p4.Pt(); });
 }
 
 
@@ -129,7 +144,7 @@ void cp3Builder::BuildJets(){
   
   // pList is list of final state particles.
   vector <int> pList;
-  if (true || reweightBtag_){ // We have to fill particle content for btag systematics
+  if (doBtagSyst_ || reweightBtag_){ // We have to fill particle content for btag systematics
     for (int  ji = 0; ji < ev->ngl; ji++){
       if (ev->gl_st[ji] == 23 || ev->gl_st[ji] == 1){
          pList.push_back(ji);
@@ -138,28 +153,32 @@ void cp3Builder::BuildJets(){
       }
     }
   }
-  
+  int iJet = 0; 
   for (int jetId = 0; jetId < ev->nj ; jetId++){
-    if (ev->j_pt[jetId] < 20)
+    double jpt   = ev->j_pt[jetId]*jec;
+    double jmass = ev->j_mass[jetId]*jec;
+    if (jpt < 20)
       continue;
-
+    if (ev->j_eta[jetId]>2.8)
+      continue;
     Jet j;
-    j.p4 = LorentzVector(ev->j_pt[jetId],ev->j_eta[jetId],ev->j_phi[jetId],ev->j_mass[jetId]);
-    j.p4.SetE(sqrt(pow(j.p4.P(),2) + pow(ev->j_mass[jetId],2)));
+    j.p4 = LorentzVector(jpt,ev->j_eta[jetId],ev->j_phi[jetId],jmass);
+    j.p4.SetE(sqrt(pow(j.p4.P(),2) + pow(jmass,2)));
 
-    int  leptCounter = 0;
+    j.idx = iJet;
+//    int  leptCounter = 0;
     bool goodDrj = true;
 
     for (auto l : HHLept_){
       goodDrj &= ROOT::Math::VectorUtil::DeltaR(j.p4,l.p4) > 0.3 ;
-      leptCounter ++;
-      if (leptCounter > 2)
-        break;
+//      leptCounter ++;
+//      if (leptCounter > 2)
+//        break;
     }
     if (!goodDrj)
       continue;
     int flav = 3; // if flav <=3, light jet ---> We don't care.
-    if(true || reweightBtag_){ // We have to get the flavour for btag efficiency.
+    if(doBtagSyst_ || reweightBtag_){ // We have to get the flavour for btag efficiency.
       // We force all jets to be btagged, and reweight the event accordingly.
       if (reweightBtag_)
         j.btag_M = true;     
@@ -191,18 +210,20 @@ void cp3Builder::BuildJets(){
     }
     if (!reweightBtag_)
     {
-      j.btag_M = (bool) (ev->j_mvav2[jetId]>>5)%2; //Choosing WP tight... FIXME
+      j.btag_M = (bool) (ev->j_mvav2[jetId]>>4)%2; //Choosing WP medium... FIXME
       j.CSV    = (int)  j.btag_M;
     }
 
 
     // Btag weights !!!!
     // Since we forced the btagging loop, the flavour should be correct here...
-    vector <float> w_h;
-    vector <float> w_l;
-    getBtagSyst(flav,j.p4.Pt(),w_l,w_h);
-    jet_sf_cmvav2_heavyjet_medium.push_back(w_h); 
-    jet_sf_cmvav2_lightjet_medium.push_back(w_l);
+    if (doBtagSyst_){
+      vector <float> w_h;
+      vector <float> w_l;
+      getBtagSyst(flav,j.p4.Pt(),w_l,w_h);
+      jet_sf_cmvav2_heavyjet_medium.push_back(w_h); 
+      jet_sf_cmvav2_lightjet_medium.push_back(w_l);
+    }
     // A little debug : 
     /*cout<<"Jet "<<jetId<<" (flav = "<<flav<<" ) : "<<endl;
     for (auto x :w_l)
@@ -212,6 +233,7 @@ void cp3Builder::BuildJets(){
       cout<<x<<" ";
     cout<<endl;*/
     HHJet_.push_back(j);
+    iJet++;
   }
 }
 
@@ -225,6 +247,8 @@ void cp3Builder::BuildDiLeptons(){
       dilep.ilep1 = ilep1;
       dilep.ilep2 = ilep2;
       dilep.isOS = HHLept_[ilep1].charge* HHLept_[ilep2].charge < 0;
+      if (! dilep.isOS) // Only keep opposite sign leptons.
+        continue;
       dilep.isPlusMinus = HHLept_[ilep1].charge > 0 && HHLept_[ilep2].charge < 0;
       dilep.isMinusPlus = HHLept_[ilep1].charge < 0 && HHLept_[ilep2].charge > 0;
       dilep.isMuMu = HHLept_[ilep1].isMu && HHLept_[ilep2].isMu;
@@ -243,12 +267,19 @@ void cp3Builder::BuildDiLeptons(){
       HHDiLept_.push_back(dilep); 
     }
   }
+  std::sort(HHDiLept_.begin(), HHDiLept_.end(), [](const HH::Dilepton& ll1, const HH::Dilepton& ll2) { return (ll1.ht_l_l > ll2.ht_l_l); });
+  HHDiLept_.resize(1);
 }
 
 void cp3Builder::BuildMet(){
   HH::Met myMet;
   //FIXME energy/Mass for met ?
   myMet.p4 = LorentzVector(ev->met_pt[0],ev->met_eta[0],ev->met_phi[0],ev->met_pt[0]);
+  if (applyJec){
+    for (auto jet: HHJet_)
+      myMet.p4 += jet.p4*(1-1./jec);
+  }
+
   HHMet_.push_back(myMet);
 }
 
@@ -521,7 +552,6 @@ void cp3Builder::GetEventVariables(){
      else
        event_weight           = 1;
     }
-
     sum_event_weight += event_weight;
     event_pu_weight          = 1;
     hh_mumu_category         = 0;

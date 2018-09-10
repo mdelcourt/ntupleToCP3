@@ -13,6 +13,6 @@ int main(int argc, char ** argv){
   std::string outputFile(argv[2]);
 
   bool reweightDY = false;
-  Converter c(inputFile,outputFile,reweightDY);
+  Converter c(inputFile,outputFile,reweightDY,1.);
   c.testProducer();
 }
