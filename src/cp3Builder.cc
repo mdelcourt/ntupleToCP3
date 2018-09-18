@@ -120,8 +120,7 @@ void cp3Builder::BuildLeptonSystematics(){
       w = 0.005;
     }
     sf.push_back(1.);
-    sf.push_back(1.+w);
-    sf.push_back(1.-w);
+    sf.push_back(w);
     if (l.isEl){
       electron_sf.push_back(sf);
      //muon_sf.push_back(one);

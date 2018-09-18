@@ -96,8 +96,8 @@ void getBtagSyst(int flav, float pt, vector <float> & w_l, vector <float> & w_h)
   if (error){
     cerr<<"Setting all btag syst to 1."<<endl;
     // Unable to apply systematics ---> set everything to 1.
-    w_h.push_back(1.); w_h.push_back(1.); w_h.push_back(1.);
-    w_l.push_back(1.); w_l.push_back(1.); w_l.push_back(1.);
+    w_h.push_back(1.); w_h.push_back(0.);
+    w_l.push_back(1.); w_l.push_back(0.);
   }
   else if ( flav < 4 ){
    // Light jet
@@ -105,13 +105,12 @@ void getBtagSyst(int flav, float pt, vector <float> & w_l, vector <float> & w_h)
    w_h.push_back(1.); w_h.push_back(1.); w_h.push_back(1.);
    float w = syst_L_TIGHT[bin];
    w_l.push_back(1.);
-   w_l.push_back(1.+w);
-   w_l.push_back(1.-w);
+   w_l.push_back(w);
   }
   else{
     // Heavy jet
     // --> Apply no systematics to w_l
-    w_l.push_back(1.); w_l.push_back(1.); w_l.push_back(1.);
+    w_l.push_back(1.); w_l.push_back(0.);
     float w;
     if (flav == 4)
       w = syst_C_TIGHT[bin];
@@ -119,8 +118,7 @@ void getBtagSyst(int flav, float pt, vector <float> & w_l, vector <float> & w_h)
       w = syst_B_TIGHT[bin];
 
      w_h.push_back(1.);
-     w_h.push_back(1.+w);
-     w_h.push_back(1.-w);
+     w_h.push_back(w);
   }
 
 }
