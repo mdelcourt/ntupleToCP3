@@ -244,6 +244,8 @@ void cp3Builder::BuildDiLeptons(){
       HH::Dilepton dilep;
 
       dilep.p4 = HHLept_[ilep1].p4 + HHLept_[ilep2].p4;
+      if (dilep.p4.M() < 12)
+        continue;
       dilep.ilep1 = ilep1;
       dilep.ilep2 = ilep2;
       dilep.isOS = HHLept_[ilep1].charge* HHLept_[ilep2].charge < 0;
@@ -268,7 +270,8 @@ void cp3Builder::BuildDiLeptons(){
     }
   }
   std::sort(HHDiLept_.begin(), HHDiLept_.end(), [](const HH::Dilepton& ll1, const HH::Dilepton& ll2) { return (ll1.ht_l_l > ll2.ht_l_l); });
-  HHDiLept_.resize(1);
+  if (HHDiLept_.size() > 1)
+    HHDiLept_.resize(1);
 }
 
 void cp3Builder::BuildMet(){
@@ -310,7 +313,6 @@ void cp3Builder::BuildllMet(){
     myllmet.ill = ill;
     myllmet.imet = 0;
 //    myllmet.isNoHF = HHMet_[0].isNoHF;
-    
     float dphi = fabs(ROOT::Math::VectorUtil::DeltaPhi(HHDiLept_[ill].p4, HHMet_[0].p4));
     myllmet.DPhi_ll_met = dphi;
     float mindphi = std::min(fabs(ROOT::Math::VectorUtil::DeltaPhi(HHLept_[HHDiLept_[ill].ilep1].p4, HHMet_[0].p4)), fabs(ROOT::Math::VectorUtil::DeltaPhi(HHLept_[HHDiLept_[ill].ilep2].p4, HHMet_[0].p4)));
@@ -319,7 +321,6 @@ void cp3Builder::BuildllMet(){
     myllmet.maxDPhi_l_met = maxdphi;
 
     myllmet.MT = (HHDiLept_[ill].p4 + HHMet_[0].p4).M(); //WTF ??? Can't process this line...
-
     myllmet.MT_formula = std::sqrt(2 * HHDiLept_[ill].p4.Pt() * HHMet_[0].p4.Pt() * (1-std::cos(dphi)));
     myllmet.projectedMet = mindphi >= M_PI ? HHMet_[0].p4.Pt() : HHMet_[0].p4.Pt() * std::sin(mindphi);
     myllmet.gen_matched = HHDiLept_[ill].gen_matched && HHMet_[0].gen_matched;
@@ -327,7 +328,6 @@ void cp3Builder::BuildllMet(){
     myllmet.gen_DR = myllmet.gen_matched ? ROOT::Math::VectorUtil::DeltaR(myllmet.p4, myllmet.gen_p4) : -1.;
     myllmet.gen_DPhi = myllmet.gen_matched ? fabs(ROOT::Math::VectorUtil::DeltaPhi(myllmet.p4, myllmet.gen_p4)) : -1.;
     myllmet.gen_DPtOverPt = myllmet.gen_matched ? (myllmet.p4.Pt() - myllmet.gen_p4.Pt()) / myllmet.p4.Pt() : -10.;
-    
     HHllMet_.push_back(myllmet);
   }
   

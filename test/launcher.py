@@ -26,7 +26,7 @@ for d in dirList:
 
 
 
-filesPerJob = 200
+filesPerJob = 100
 jobList = []
 job = []
 for p in pList:
@@ -72,11 +72,18 @@ if "postSlurm.sh" in os.listdir("."):
   os.system("rm postSlurm.sh")
 
 postProcess = ""
+ntp = 0
+for job in jobList:
+  ntp+=len(job)
+
+pp = 0
 for job in jobList:
   for p in job:
     postProcess += "mv %s/%s %s\n"%(dumpDir,p[1].split("/")[-1],p[1])
     postProcess += "mv %s/JECUP_%s %s\n"%(dumpDir,p[1].split("/")[-1],p[1].replace("/p2ntuple","_jecUp/p2ntuple"))
-    postProcess += "mv %s/JECDOWN%s %s\n"%(dumpDir,p[1].split("/")[-1],p[1].replace("/p2ntuple","_jecDown/p2ntuple"))
-
+    postProcess += "mv %s/JECDOWN_%s %s\n"%(dumpDir,p[1].split("/")[-1],p[1].replace("/p2ntuple","_jecDown/p2ntuple"))
+    pp = pp+1
+    if ((pp%500) == 0):
+      postProcess+= "echo '%s / %s (%s%%)'\n"%(pp,ntp,int(100*pp*1./ntp))
 with open("postSlurm.sh","w") as f:
   f.write(postProcess)
