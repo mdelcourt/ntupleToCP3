@@ -22,13 +22,17 @@ class cp3Builder{
     void BuildllMet();
     void BuildllMetjj();
     void GetEventVariables();
+    void GetHHgen();
+
 
     float HT_;
     int nBJets_, nMuons_, nElectrons_, nJets_;
     
     bool   reweightBtag_;
     bool   doBtagSyst_;
+    bool   doGenInfo_;
     float  event_weight             ;
+    float  event_alpha_qcd          ;
     float  sum_event_weight         ;
     float  event_pu_weight          ;
     float  event_btag_weight        ;
@@ -55,6 +59,9 @@ class cp3Builder{
     float jec;
 
     HH::LorentzVector met_p4;
+    HH::LorentzVector hh_gen_H1;
+    HH::LorentzVector hh_gen_H2;
+
     std::vector < HH::Lepton   >   HHLept_  ;
     std::vector < HH::Jet      >   HHJet_   ;
     std::vector < HH::Dijet    >   HHDiJet_   ;

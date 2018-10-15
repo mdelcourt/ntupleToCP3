@@ -24,6 +24,10 @@ cp3Builder::cp3Builder(MiniEvent_t * e_, string fName, bool reweightBtag, float 
   cout<<"This sample is";
   if (!isDY_) cout<<" not";
   cout<<" DY."<<endl;
+
+  doGenInfo_  = (fName.find("HH") != std::string::npos );
+  if (doGenInfo_)
+    cout<<"Will generate HH gen information"<<endl;
   doBtagSyst_ = true;
 }
 
@@ -54,6 +58,8 @@ void cp3Builder::Build(){
   BuildllMet();
   BuildllMetjj();
   GetEventVariables();
+  if (doGenInfo_)
+    GetHHgen();
 }
 
 void cp3Builder::BuildLeptons(){
@@ -107,7 +113,11 @@ void cp3Builder::BuildLeptons(){
 void cp3Builder::BuildLeptonSystematics(){
 
   vector <float> sf;
-  vector <float> one(3,1.);
+  vector <float> one;
+  one.push_back(1.);
+  one.push_back(0.);
+  one.push_back(0.);
+
   float w = 0;
   for (auto l : HHLept_){
     if (l.isEl){
@@ -120,6 +130,7 @@ void cp3Builder::BuildLeptonSystematics(){
       w = 0.005;
     }
     sf.push_back(1.);
+    sf.push_back(w);
     sf.push_back(w);
     if (l.isEl){
       electron_sf.push_back(sf);
@@ -597,7 +608,31 @@ void cp3Builder::GetEventVariables(){
 
 }
 
+void cp3Builder::GetHHgen(){
+//  cout<<"Building HH gen..."<<endl;
+  int higgsId = 0;
+  for (int  ji = 0; ji < ev->ngl; ji++){
+      if (ev->gl_pid[ji] == 25  && ev->gl_st[ji] == 22){
+         //cout<<"HIGGS DISCOVERED !!! (pt,eta,phi)  = (";
+         //cout<<ev->gl_pt[ji]<<","<<ev->gl_eta[ji]<<","<<ev->gl_phi[ji]<<"). Status = "<<ev->gl_st[ji]<<endl;
+         if (higgsId==0){
+           hh_gen_H1 = LorentzVector(ev->gl_pt[ji],ev->gl_eta[ji],ev->gl_phi[ji],ev->gl_mass[ji]);
+           hh_gen_H1.SetE(sqrt(pow(hh_gen_H1.P(),2) + pow(ev->gl_mass[ji],2)));
+           higgsId++;
+         }
+         else if(higgsId==1){
+           hh_gen_H2 = LorentzVector(ev->gl_pt[ji],ev->gl_eta[ji],ev->gl_phi[ji],ev->gl_mass[ji]);
+           hh_gen_H2.SetE(sqrt(pow(hh_gen_H1.P(),2) + pow(ev->gl_mass[ji],2)));
+           higgsId++;
+         }
+         else{
+           cout<<"Error, more than 2 higgses found."<<endl;
+         }
+      }
+  }
 
+
+}
 
 
 
@@ -639,7 +674,10 @@ void cp3Builder::InitializeTree(TTree * t){
   t->Branch("hh_nMuonsT"     ,&nMuons_    );
   t->Branch("hh_nElectronsM" ,&nElectrons_);
   t->Branch("met_p4"         ,&met_p4     );
+  t->Branch("hh_gen_H1"      ,&hh_gen_H1  );
+  t->Branch("hh_gen_H2"      ,&hh_gen_H2  );
   t->Branch("event_weight"               ,&event_weight              );     
+  t->Branch("event_alpha_qcd"            ,&event_alpha_qcd           );     
   t->Branch("event_pu_weight"            ,&event_pu_weight           );     
   t->Branch("event_is_data"              ,&event_is_data             );     
   t->Branch("event_scale_weights"        ,&event_scale_weights       );     

@@ -16,7 +16,7 @@ config = Configuration()
 config.sbatch_partition = 'cp3'
 config.sbatch_qos = 'cp3'
 config.sbatch_workdir = './slurm/'
-config.sbatch_time = '0-02:30:00'
+config.sbatch_time = '0-12:00:00'
 config.sbatch_mem = '1024'
 
 config.sbatch_output = ''
@@ -55,7 +55,7 @@ config.stageoutDir = "/home/ucl/cp3/delcourt/storage/HH_HLLHC/CP3_NTUPLES_YR/dum
 config.writeLogsOnWN = True
 config.separateStdoutStderrLogs = False
 config.stdoutFilename = "slurm-${SLURM_ARRAY_JOB_ID}_${SLURM_ARRAY_TASK_ID}.out"
-config.stderrFilename = ""
+config.stderrFilename = "slurm-${SLURM_ARRAY_JOB_ID}_${SLURM_ARRAY_TASK_ID}.err"
 
 config.stageoutLogs = True
 config.stageoutLogsDir = config.stageoutDir + '/logs'

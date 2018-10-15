@@ -1,7 +1,7 @@
 
 _DEPS= cp3Types.h MiniEvent.h ntupleReader.h Converter.h cp3Builder.h Tools.h BtagWeight.h
 _OBJ = MiniEvent.o ntupleReader.o Converter.o cp3Builder.o Tools.o Dict.o BtagWeight.o
-_PLUGINS = ntupleToCp3.out verifyIntegrity.out ntupleToCp3_jec.out plotter.out
+_PLUGINS = ntupleToCp3.out verifyIntegrity.out ntupleToCp3_jec.out plotter.out printGenInfo.out 
 
 IDIR = .
 LDIR = ./lib
